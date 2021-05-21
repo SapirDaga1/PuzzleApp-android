@@ -1,5 +1,6 @@
 package il.org.puzzeling;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,6 +29,7 @@ import android.net.Uri;
 
 import android.media.ExifInterface;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class PuzzleActivity extends AppCompatActivity {
     ArrayList<PuzzlePieces> pieces;
     String mCurrentPhotoPath;
     String mCurrentPhotoUri;
+
     Chronometer simpleChronometer; //stopper
     public int num; //num of pieces
 
@@ -57,6 +61,10 @@ public class PuzzleActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String assetName = intent.getStringExtra("assetName");
+        num=intent.getIntExtra("level",3);
+
+
+
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
@@ -76,6 +84,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 }
                pieces = splitImage();
                 TouchListener touchListener = new TouchListener(PuzzleActivity.this);
+
                 // shuffle pieces order
                 Collections.shuffle(pieces);
                 for (PuzzlePieces piece : pieces) {
@@ -93,6 +102,7 @@ public class PuzzleActivity extends AppCompatActivity {
         });
 
     }
+
 
 
 

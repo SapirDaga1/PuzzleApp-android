@@ -36,13 +36,13 @@ import java.util.Date;
 
 import static java.lang.Math.abs;
 
-public class MainActivity extends AppCompatActivity implements SingleChoiceDialog.SingleChoiceListener {
+public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
-
+    int choice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +55,60 @@ public class MainActivity extends AppCompatActivity implements SingleChoiceDialo
 
             GridView grid = findViewById(R.id.grid);
             grid.setAdapter(new ImageAdapter(this));
+
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getApplicationContext(), PuzzleActivity.class);
-                    DialogFragment singleChoiceDialog=new SingleChoiceDialog();
-                    singleChoiceDialog.setCancelable(false);
-                    singleChoiceDialog.show(getSupportFragmentManager(),"single choice dialog");
-                    intent.putExtra("assetName", files[i % files.length]);
-                    startActivity(intent);
-
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    showAlertDialog();
                 }
+                private void showAlertDialog() {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                    alertDialog.setTitle(R.string.level_hint);
+                    String[] items = {"Easy","Medium","Hard","Super Hard"};
+                    int checkedItem = 1;
+
+                    alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            switch (which) {
+                                case 0:
+                                    choice = 3;
+                                    break;
+                                case 1:
+                                    choice = 4;
+                                    break;
+                                case 2:
+                                    choice = 5;
+                                    break;
+                                case 3:
+                                    choice = 6;
+                                    break;
+                            }
+                        }
+                    });
+                    alertDialog.setPositiveButton(R.string.select_btn, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent= new Intent(MainActivity.this,PuzzleActivity.class);
+                            intent.putExtra("level",choice);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+                    AlertDialog alert = alertDialog.create();
+                    alert.setCanceledOnTouchOutside(false);
+
+                    alert.show();
+                }
+
             });
         } catch (IOException e) {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT);
         }
+
+
     }
     public void onImageFromCameraClick(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -151,11 +190,7 @@ public class MainActivity extends AppCompatActivity implements SingleChoiceDialo
         }
     }
 
-    @Override
-    public void onPositiveButtonClicked(String[] list, int position) {
 
-
-    }
 }
 
 
