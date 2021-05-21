@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Puzzeling</string>
+    <string name="about_btn">ABOUT</string>
+    <string name="records_btn">TABLE OF RECORDS</string>
+    <string name="play_btn">PLAY</string>
+    <string name="level_hint">SELECT LEVEL</string>
+
+
+    <string-array name="levels">
+        <item>Esay</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Super hard</item>
+    </string-array>
+    <string name="select_btn">Select</string>
+</resources>
+
