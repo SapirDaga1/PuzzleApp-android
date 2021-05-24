@@ -12,6 +12,13 @@
         <item>Hard</item>
         <item>Super hard</item>
     </string-array>
+
     <string name="select_btn">Select</string>
+    <string name="easy_selected">Easy level selected - 16 pieces</string>
+    <string name="medium_selected">Medium level selected - 25 pieces</string>
+    <string name="hard_selected">Hard level selected - 36 pieces</string>
+    <string name="super_hard_selected">Super hard level selected - 49 pieces</string>
+    <string name="back_btn">BACK</string>
+    <string name="cancel_btn">CANCEL</string>
 </resources>
 

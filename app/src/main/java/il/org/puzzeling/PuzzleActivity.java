@@ -41,6 +41,7 @@ public class PuzzleActivity extends AppCompatActivity {
     ArrayList<PuzzlePieces> pieces;
     String mCurrentPhotoPath;
     String mCurrentPhotoUri;
+    String  mCurrentPhoto;
 
     Chronometer simpleChronometer; //stopper
     public int num; //num of pieces
@@ -61,14 +62,13 @@ public class PuzzleActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String assetName = intent.getStringExtra("assetName");
-        num=intent.getIntExtra("level",3);
-
-
 
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
+        mCurrentPhoto=intent.getStringExtra(  "mCurrentPhoto");
 
+        num=intent.getIntExtra("level",3);
         // run image related code after the view was laid out
         // to have all dimensions calculated
         imageView.post(new Runnable() {
