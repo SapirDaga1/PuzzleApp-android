@@ -35,7 +35,6 @@
         android:layout_marginRight="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="PlayBackgroundSound"
         android:src="@drawable/music_on"
         android:tint="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"

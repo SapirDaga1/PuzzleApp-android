@@ -7,6 +7,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PuzzleActivity"
     android:background="@drawable/aaaaa">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/musicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/music_on"
+        android:tint="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -23,7 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintDimensionRatio="H,4:5"
-        app:srcCompat="@drawable/photo1"
         android:alpha="0.5">
 
     </ImageView>
@@ -36,7 +48,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        //stopper
+        <!--stopper -->
         <Chronometer
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

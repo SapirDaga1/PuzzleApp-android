@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
@@ -43,8 +44,8 @@ import static java.lang.Math.abs;
 public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
-    static boolean musicClicked=true;
-    MediaPlayer mediaPlayer;
+    SharedPreferences sp;
+    boolean musicClicked;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
@@ -55,11 +56,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mediaPlayer = MediaPlayer.create(this,R.raw.feeling_free);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100,100);
-        mediaPlayer.start();
+        sp = getSharedPreferences("music",MODE_PRIVATE);
+        musicClicked= sp.getBoolean("music",true);
+        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        musicBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (musicClicked)
+                {
+                    //Pause/Stop music
+                    musicClicked=!musicClicked;
+                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
+                    i = findViewById(R.id.musicButton);
+                    i.setImageResource(R.drawable.music_off);
+                    //mediaPlayer.pause();
 
+                }
+                else
+                {
+                    //Recover music
+                    musicClicked=!musicClicked;
+                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
+                    i = findViewById(R.id.musicButton);
+                    i.setImageResource(R.drawable.music_on);
+                    //mediaPlayer.start();
+
+                }
+            }
+        });
         AssetManager am = getAssets();
         try {
             final String[] files = am.list("img");
@@ -79,32 +103,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT);
         }
-        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
-        musicBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (musicClicked)
-                {
-                    //Pause/Stop music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_off);
-                    mediaPlayer.pause();
 
-                }
-                else
-                {
-                    //Recover music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_on);
-                    mediaPlayer.start();
-
-                }
-            }
-        });
 
 
     }
@@ -144,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("level", choice);
                 intent.putExtra("assetName", mCurrentPhoto);
                 startActivity(intent);
-                finish();
 
             }
         });

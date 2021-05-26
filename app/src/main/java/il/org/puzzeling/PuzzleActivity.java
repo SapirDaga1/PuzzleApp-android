@@ -2,6 +2,7 @@ package il.org.puzzeling;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +33,8 @@ import android.media.ExifInterface;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
@@ -42,7 +45,8 @@ public class PuzzleActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhotoUri;
     String  mCurrentPhoto;
-
+    SharedPreferences sp;
+    boolean musicClicked;
     Chronometer simpleChronometer; //stopper
     public int num; //num of pieces
 
@@ -51,6 +55,34 @@ public class PuzzleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+        sp = getSharedPreferences("music",MODE_PRIVATE);
+        musicClicked= sp.getBoolean("music",true);
+        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        musicBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (musicClicked)
+                {
+                    //Pause/Stop music
+                    musicClicked=!musicClicked;
+                    FloatingActionButton i = new FloatingActionButton(PuzzleActivity.this);
+                    i = findViewById(R.id.musicButton);
+                    i.setImageResource(R.drawable.music_off);
+                    //mediaPlayer.pause();
+
+                }
+                else
+                {
+                    //Recover music
+                    musicClicked=!musicClicked;
+                    FloatingActionButton i = new FloatingActionButton(PuzzleActivity.this);
+                    i = findViewById(R.id.musicButton);
+                    i.setImageResource(R.drawable.music_on);
+                    //mediaPlayer.start();
+
+                }
+            }
+        });
 
         final RelativeLayout layout = findViewById(R.id.layout);
         final ImageView imageView = findViewById(R.id.imageView);
