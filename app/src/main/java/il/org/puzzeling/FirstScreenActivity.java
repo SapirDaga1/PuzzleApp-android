@@ -17,7 +17,7 @@ public class FirstScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       setContentView(R.layout.activity_firstscreen);
+        setContentView(R.layout.activity_firstscreen);
 
         playBtn=findViewById(R.id.play_btn);
         aboutBtn=findViewById(R.id.about_btn);
@@ -26,10 +26,8 @@ public class FirstScreenActivity extends AppCompatActivity {
         //moving to puzzleActivity
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
-           startActivity(intent);
-           finish();
+            public void onClick(View v) { Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
+                startActivity(intent);
 
             }
         });
