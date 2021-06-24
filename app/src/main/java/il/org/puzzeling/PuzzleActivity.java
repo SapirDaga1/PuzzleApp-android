@@ -119,15 +119,7 @@ public class PuzzleActivity extends AppCompatActivity {
         chronometer = findViewById(R.id.chronometer);
         chronometer.setFormat("Time: %s");
         chronometer.setBase(SystemClock.elapsedRealtime());
-        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                if ((SystemClock.elapsedRealtime() - chronometer.getBase()) >= 10000) {
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    Toast.makeText(PuzzleActivity.this, "Bing!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
 
         //--------finish game dialog--------//
         win_dialog = new Dialog(this);
@@ -185,7 +177,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void startChronometer(View v) {
         if (!running) {
-            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
             running = true;
         }
