@@ -40,6 +40,7 @@ import android.net.Uri;
 
 import android.media.ExifInterface;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -82,6 +83,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);

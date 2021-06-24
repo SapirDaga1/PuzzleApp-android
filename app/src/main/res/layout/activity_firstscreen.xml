@@ -8,6 +8,18 @@
     tools:context=".FirstScreenActivity"
     android:id="@+id/first_screen_layout"
     android:background="@drawable/first_screen_photo">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/musicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/music_on"
+        android:tint="@android:color/white" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
