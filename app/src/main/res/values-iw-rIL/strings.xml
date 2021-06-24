@@ -12,4 +12,11 @@
     <string name="super_hard_selected">"שלב קשה מאוד נבחר- 49 חלקים "</string>
     <string name="back_btn">חזור</string>
     <string name="cancel_btn">בטל</string>
+    <string name="easy_lvl">קל</string>
+    <string name="medium_lvl">בינוני</string>
+    <string name="hard_lvl">קשה</string>
+    <string name="super_hard_lvl">"קשה מאוד "</string>
+    <string name="name_hint">הכנס את שמך</string>
+    <string name="ok_hint">שלח</string>
+    <string name="resume_hint">לחץ על \"שחק\" כדי להמשיך</string>
 </resources>

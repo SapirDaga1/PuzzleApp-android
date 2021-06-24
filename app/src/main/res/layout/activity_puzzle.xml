@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PuzzleActivity"
-    android:background="@drawable/aaaaa">
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/musicButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/music_on"
-        android:tint="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
+    >
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -36,9 +25,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintDimensionRatio="H,4:5"
-        android:alpha="0.5">
+        app:srcCompat="@drawable/aaaaa"
+        android:alpha="0.2">
 
     </ImageView>
+
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
@@ -48,16 +39,44 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--stopper -->
-        <Chronometer
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chronometer"
-            android:format="00:00:00"
-            android:textSize="40sp"
-            android:paddingStart="125dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+        //----Timer----//
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timer_layout">
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="startChronometer"
+                android:text="Start" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="pauseChronometer"
+                android:text="Pause" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="resetChronometer"
+                android:text="Reset" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/countdown_anim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:lottie_rawRes="@raw/countdown"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"/>
+        </LinearLayout>
+
+
+
+
     </RelativeLayout>
 
 

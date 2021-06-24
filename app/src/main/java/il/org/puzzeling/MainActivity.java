@@ -5,51 +5,45 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.media.MediaPlayer;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.File;
 import java.io.IOException;
-
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
-import static java.lang.Math.abs;
+import static il.org.puzzeling.FirstScreenActivity.isMuted;
+
 
 public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
     SharedPreferences sp;
+    GridView grid;
+    ImageView imageView;
     boolean musicClicked;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
+    String [] items;
     int choice = 4; //default choice is easy level
 
     @Override
@@ -57,30 +51,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("music",MODE_PRIVATE);
-        musicClicked= sp.getBoolean("music",true);
+        manageMusic(false);
         FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        if (isMuted)
+            musicBtn.setImageResource(R.drawable.music_off);
+
         musicBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (musicClicked)
+                isMuted =!isMuted;
+                if (isMuted)
                 {
                     //Pause/Stop music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_off);
-                    //mediaPlayer.pause();
+                    manageMusic(true);
+                    musicBtn.setImageResource(R.drawable.music_off);
 
                 }
                 else
                 {
                     //Recover music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(MainActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_on);
-                    //mediaPlayer.start();
-
+                    manageMusic(false);
+                    musicBtn.setImageResource(R.drawable.music_on);
                 }
             }
         });
@@ -88,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             final String[] files = am.list("img");
 
-            GridView grid = findViewById(R.id.grid);
+            grid = findViewById(R.id.grid);
             grid.setAdapter(new ImageAdapter(this));
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -107,11 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-//choosing level
+    //choosing level
     public void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle(R.string.level_hint);
-        String[] items = {"Easy", "Medium", "Hard", "Super Hard"};
+        Resources res =getResources();
+       items= res.getStringArray(R.array.levels);
         int checkedItem = 0;// first item in items array
         alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
             @Override
@@ -120,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         choice = 4;
                         Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
+
                         break;
                     case 1:
                         choice = 5;
@@ -138,21 +131,34 @@ public class MainActivity extends AppCompatActivity {
         });
         alertDialog.setPositiveButton(R.string.select_btn, new DialogInterface.OnClickListener() {
             @Override
+
             public void onClick(DialogInterface dialog, int which) {
+
                 Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
-                intent.putExtra("level", choice);
-                intent.putExtra("assetName", mCurrentPhoto);
+
+
+                if(REQUEST_IMAGE_GALLERY==4) {
+                    intent.putExtra("level", choice);
+                    intent.putExtra("assetName", mCurrentPhoto);
+                }
+
+                if(REQUEST_IMAGE_CAPTURE==1) {
+                    intent.putExtra("level", choice);
+                    intent.putExtra("assetName", mCurrentPhoto);
+                }
+
                 startActivity(intent);
+
 
             }
         });
         alertDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //back to the same activity
+                //back to same activity
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
+
             }
         });
         AlertDialog alert = alertDialog.create();
@@ -160,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-
+    //choosing picture from camera
     public void onImageFromCameraClick(View view) {
         showAlertDialog();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -225,25 +231,22 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Intent intent= new Intent(this,PuzzleActivity.class);
+            intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
+            intent.putExtra("level",choice);
+            startActivity(intent);
 
-            showAlertDialog();
-
-        //   Intent intent = new Intent(this, PuzzleActivity.class);
-          //   intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
-
-        //    startActivity(intent);
         }
+
         if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
+            final Uri uri = data.getData();
+            Intent intent= new Intent(this,PuzzleActivity.class);
+            intent.putExtra("mCurrentPhotoUri", uri.toString());
+            intent.putExtra("level",choice);
+            startActivity(intent);
 
-            showAlertDialog();
-
-          // Intent intent = new Intent(this, PuzzleActivity.class);
-         //  intent.putExtra("mCurrentPhotoUri", uri.toString());
-
-        // startActivity(intent);
-        }
-    }
+                }
+            }
 
     public void onImageFromGalleryClick(View view) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -255,8 +258,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("music", isMuted).commit();
+        manageMusic(true);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        manageMusic(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        manageMusic(false);
+    }
+
+    public void manageMusic(boolean forceShutdown) {
+        if ( isMuted || forceShutdown)
+            MusicPlayer.pause();
+        else
+            MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
+    }
 }
-
-
 

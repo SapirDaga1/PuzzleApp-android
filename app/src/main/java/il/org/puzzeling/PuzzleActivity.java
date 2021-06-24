@@ -1,5 +1,7 @@
 package il.org.puzzeling;
 
+import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +9,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -14,16 +17,23 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Random;
 import java.io.InputStream;
 import android.net.Uri;
@@ -32,11 +42,17 @@ import android.media.ExifInterface;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import static il.org.puzzeling.FirstScreenActivity.isMuted;
 import static java.lang.Math.abs;
 
 public class PuzzleActivity extends AppCompatActivity {
@@ -48,59 +64,86 @@ public class PuzzleActivity extends AppCompatActivity {
     SharedPreferences sp;
     boolean musicClicked;
     Chronometer simpleChronometer; //stopper
+
+    //------Timer----------//
+    private Chronometer chronometer;
+    private long pauseOffset;
+    private boolean running;
+
+    LottieAnimationView lottieAnimationView;
+
+    //---Dialog finish game----//
+    Dialog win_dialog;
+    Dialog pause_dialog;
+
+    //  boolean timerStarted = true;
     public int num; //num of pieces
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         sp = getSharedPreferences("music",MODE_PRIVATE);
-        musicClicked= sp.getBoolean("music",true);
+        manageMusic(false);
         FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        if (isMuted)
+            musicBtn.setImageResource(R.drawable.music_off);
         musicBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (musicClicked)
+                isMuted= !isMuted;
+                if (isMuted)
                 {
                     //Pause/Stop music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(PuzzleActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_off);
-                    //mediaPlayer.pause();
+                    manageMusic(true);
+                    musicBtn.setImageResource(R.drawable.music_off);
 
                 }
                 else
                 {
                     //Recover music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(PuzzleActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_on);
-                    //mediaPlayer.start();
-
+                    manageMusic(false);
+                    musicBtn.setImageResource(R.drawable.music_on);
                 }
             }
         });
 
+
         final RelativeLayout layout = findViewById(R.id.layout);
         final ImageView imageView = findViewById(R.id.imageView);
 
-        //chronometer- doesn't works!
-        simpleChronometer = (Chronometer) findViewById(R.id.chronometer); // initiate a chronometer
-        simpleChronometer.start();
+        //------Timer------//
 
+        chronometer = findViewById(R.id.chronometer);
+        chronometer.setFormat("Time: %s");
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if ((SystemClock.elapsedRealtime() - chronometer.getBase()) >= 10000) {
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                    Toast.makeText(PuzzleActivity.this, "Bing!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //--------finish game dialog--------//
+        win_dialog = new Dialog(this);
+        pause_dialog= new Dialog(this);
 
         Intent intent = getIntent();
         final String assetName = intent.getStringExtra("assetName");
 
+        lottieAnimationView = findViewById(R.id.countdown_anim);
+        lottieAnimationView.setVisibility(View.VISIBLE);
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
-        mCurrentPhoto=intent.getStringExtra(  "mCurrentPhoto");
+        mCurrentPhoto = intent.getStringExtra("mCurrentPhoto");
+        num = intent.getIntExtra("level", 4);
 
-        num=intent.getIntExtra("level",3);
+
+
         // run image related code after the view was laid out
         // to have all dimensions calculated
         imageView.post(new Runnable() {
@@ -114,7 +157,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 } else if (mCurrentPhotoUri != null) {
                     imageView.setImageURI(Uri.parse(mCurrentPhotoUri));
                 }
-               pieces = splitImage();
+                pieces = splitImage();
                 TouchListener touchListener = new TouchListener(PuzzleActivity.this);
 
                 // shuffle pieces order
@@ -127,6 +170,8 @@ public class PuzzleActivity extends AppCompatActivity {
                     lParams.leftMargin = new Random().nextInt(layout.getWidth() - piece.pieceWidth);
                     lParams.topMargin = layout.getHeight() - piece.pieceHeight;
                     piece.setLayoutParams(lParams);
+                    if(piece.canMove)
+                        startChronometer((View)piece );
                     checkGameOver();
                 }
             }
@@ -135,6 +180,32 @@ public class PuzzleActivity extends AppCompatActivity {
 
     }
 
+
+    public void startChronometer(View v) {
+        if (!running) {
+            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            chronometer.start();
+            running = true;
+        }
+
+    }
+    public void pauseChronometer(View v) {
+        if (running) {
+            chronometer.stop();
+            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+            running = false;
+            openPauseDialog();
+
+
+        }
+    }
+    public void resetChronometer(View v) {
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
+       //reset the activity
+        finish();
+        startActivity(getIntent());
+    }
 
 
 
@@ -179,132 +250,132 @@ public class PuzzleActivity extends AppCompatActivity {
         int rows =num;
         int cols = num;
 
-            ImageView imageView = findViewById(R.id.imageView);
-            ArrayList<PuzzlePieces> pieces = new ArrayList<>(piecesNumber);
+        ImageView imageView = findViewById(R.id.imageView);
+        ArrayList<PuzzlePieces> pieces = new ArrayList<>(piecesNumber);
 
-            // Get the scaled bitmap of the source image
-            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
+        // Get the scaled bitmap of the source image
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
 
-            int[] dimensions = getBitmapPositionInsideImageView(imageView);
-            int scaledBitmapLeft = dimensions[0];
-            int scaledBitmapTop = dimensions[1];
-            int scaledBitmapWidth = dimensions[2];
-            int scaledBitmapHeight = dimensions[3];
+        int[] dimensions = getBitmapPositionInsideImageView(imageView);
+        int scaledBitmapLeft = dimensions[0];
+        int scaledBitmapTop = dimensions[1];
+        int scaledBitmapWidth = dimensions[2];
+        int scaledBitmapHeight = dimensions[3];
 
-            int croppedImageWidth = scaledBitmapWidth - 2 * abs(scaledBitmapLeft);
-            int croppedImageHeight = scaledBitmapHeight - 2 * abs(scaledBitmapTop);
+        int croppedImageWidth = scaledBitmapWidth - 2 * abs(scaledBitmapLeft);
+        int croppedImageHeight = scaledBitmapHeight - 2 * abs(scaledBitmapTop);
 
-            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledBitmapWidth, scaledBitmapHeight, true);
-            Bitmap croppedBitmap = Bitmap.createBitmap(scaledBitmap, abs(scaledBitmapLeft), abs(scaledBitmapTop), croppedImageWidth, croppedImageHeight);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledBitmapWidth, scaledBitmapHeight, true);
+        Bitmap croppedBitmap = Bitmap.createBitmap(scaledBitmap, abs(scaledBitmapLeft), abs(scaledBitmapTop), croppedImageWidth, croppedImageHeight);
 
-            // Calculate the with and height of the pieces
-            int pieceWidth = croppedImageWidth / cols;
-            int pieceHeight = croppedImageHeight / rows;
+        // Calculate the with and height of the pieces
+        int pieceWidth = croppedImageWidth / cols;
+        int pieceHeight = croppedImageHeight / rows;
 
-            // Create each bitmap piece and add it to the resulting array
-            int yCoord = 0;
-            for (int row = 0; row < rows; row++) {
-                int xCoord = 0;
-                for (int col = 0; col < cols; col++) {
+        // Create each bitmap piece and add it to the resulting array
+        int yCoord = 0;
+        for (int row = 0; row < rows; row++) {
+            int xCoord = 0;
+            for (int col = 0; col < cols; col++) {
 
-                    // calculate offset for each piece
-                    int offsetX = 0;
-                    int offsetY = 0;
-                    if (col > 0) {
-                        offsetX = pieceWidth / 3;
-                    }
-                    if (row > 0) {
-                        offsetY = pieceHeight / 3;
-                    }
-
-                    // apply the offset to each piece
-                    Bitmap pieceBitmap = Bitmap.createBitmap(croppedBitmap, xCoord - offsetX, yCoord - offsetY, pieceWidth + offsetX, pieceHeight + offsetY);
-                    PuzzlePieces piece = new PuzzlePieces(getApplicationContext());
-                    piece.setImageBitmap(pieceBitmap);
-                    piece.xCoord = xCoord - offsetX + imageView.getLeft();
-                    piece.yCoord = yCoord - offsetY + imageView.getTop();
-                    piece.pieceWidth = pieceWidth + offsetX;
-                    piece.pieceHeight = pieceHeight + offsetY;
-
-                    // this bitmap will hold our final puzzle piece image
-                    Bitmap puzzlePiece = Bitmap.createBitmap(pieceWidth + offsetX, pieceHeight + offsetY, Bitmap.Config.ARGB_8888);
-
-                    // draw path
-                    int bumpSize = pieceHeight / 4;
-                    Canvas canvas = new Canvas(puzzlePiece);
-                    Path path = new Path();
-                    path.moveTo(offsetX, offsetY);
-                    if (row == 0) {
-                        // top side piece
-                        path.lineTo(pieceBitmap.getWidth(), offsetY);
-                    } else {
-                        // top bump
-                        path.lineTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 3, offsetY);
-                        path.cubicTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 6, offsetY - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 6 * 5, offsetY - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 3 * 2, offsetY);
-                        path.lineTo(pieceBitmap.getWidth(), offsetY);
-                    }
-
-                    if (col == cols - 1) {
-                        // right side piece
-                        path.lineTo(pieceBitmap.getWidth(), pieceBitmap.getHeight());
-                    } else {
-                        // right bump
-                        path.lineTo(pieceBitmap.getWidth(), offsetY + (pieceBitmap.getHeight() - offsetY) / 3);
-                        path.cubicTo(pieceBitmap.getWidth() - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6, pieceBitmap.getWidth() - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6 * 5, pieceBitmap.getWidth(), offsetY + (pieceBitmap.getHeight() - offsetY) / 3 * 2);
-                        path.lineTo(pieceBitmap.getWidth(), pieceBitmap.getHeight());
-                    }
-
-                    if (row == rows - 1) {
-                        // bottom side piece
-                        path.lineTo(offsetX, pieceBitmap.getHeight());
-                    } else {
-                        // bottom bump
-                        path.lineTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 3 * 2, pieceBitmap.getHeight());
-                        path.cubicTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 6 * 5, pieceBitmap.getHeight() - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 6, pieceBitmap.getHeight() - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 3, pieceBitmap.getHeight());
-                        path.lineTo(offsetX, pieceBitmap.getHeight());
-                    }
-
-                    if (col == 0) {
-                        // left side piece
-                        path.close();
-                    } else {
-                        // left bump
-                        path.lineTo(offsetX, offsetY + (pieceBitmap.getHeight() - offsetY) / 3 * 2);
-                        path.cubicTo(offsetX - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6 * 5, offsetX - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6, offsetX, offsetY + (pieceBitmap.getHeight() - offsetY) / 3);
-                        path.close();
-                    }
-
-                    // mask the piece
-                    Paint paint = new Paint();
-                    paint.setColor(0XFF000000);
-                    paint.setStyle(Paint.Style.FILL);
-
-                    canvas.drawPath(path, paint);
-                    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-                    canvas.drawBitmap(pieceBitmap, 0, 0, paint);
-
-                    // draw a white border
-                    Paint border = new Paint();
-                    border.setColor(0X80FFFFFF);
-                    border.setStyle(Paint.Style.STROKE);
-                    border.setStrokeWidth(8.0f);
-                    canvas.drawPath(path, border);
-
-                    // draw a black border
-                    border = new Paint();
-                    border.setColor(0X80000000);
-                    border.setStyle(Paint.Style.STROKE);
-                    border.setStrokeWidth(3.0f);
-                    canvas.drawPath(path, border);
-
-                    // set the resulting bitmap to the piece
-                    piece.setImageBitmap(puzzlePiece);
-                    pieces.add(piece);
-                    xCoord += pieceWidth;
+                // calculate offset for each piece
+                int offsetX = 0;
+                int offsetY = 0;
+                if (col > 0) {
+                    offsetX = pieceWidth / 3;
                 }
-                yCoord += pieceHeight;
+                if (row > 0) {
+                    offsetY = pieceHeight / 3;
+                }
+
+                // apply the offset to each piece
+                Bitmap pieceBitmap = Bitmap.createBitmap(croppedBitmap, xCoord - offsetX, yCoord - offsetY, pieceWidth + offsetX, pieceHeight + offsetY);
+                PuzzlePieces piece = new PuzzlePieces(getApplicationContext());
+                piece.setImageBitmap(pieceBitmap);
+                piece.xCoord = xCoord - offsetX + imageView.getLeft();
+                piece.yCoord = yCoord - offsetY + imageView.getTop();
+                piece.pieceWidth = pieceWidth + offsetX;
+                piece.pieceHeight = pieceHeight + offsetY;
+
+                // this bitmap will hold our final puzzle piece image
+                Bitmap puzzlePiece = Bitmap.createBitmap(pieceWidth + offsetX, pieceHeight + offsetY, Bitmap.Config.ARGB_8888);
+
+                // draw path
+                int bumpSize = pieceHeight / 4;
+                Canvas canvas = new Canvas(puzzlePiece);
+                Path path = new Path();
+                path.moveTo(offsetX, offsetY);
+                if (row == 0) {
+                    // top side piece
+                    path.lineTo(pieceBitmap.getWidth(), offsetY);
+                } else {
+                    // top bump
+                    path.lineTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 3, offsetY);
+                    path.cubicTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 6, offsetY - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 6 * 5, offsetY - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 3 * 2, offsetY);
+                    path.lineTo(pieceBitmap.getWidth(), offsetY);
+                }
+
+                if (col == cols - 1) {
+                    // right side piece
+                    path.lineTo(pieceBitmap.getWidth(), pieceBitmap.getHeight());
+                } else {
+                    // right bump
+                    path.lineTo(pieceBitmap.getWidth(), offsetY + (pieceBitmap.getHeight() - offsetY) / 3);
+                    path.cubicTo(pieceBitmap.getWidth() - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6, pieceBitmap.getWidth() - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6 * 5, pieceBitmap.getWidth(), offsetY + (pieceBitmap.getHeight() - offsetY) / 3 * 2);
+                    path.lineTo(pieceBitmap.getWidth(), pieceBitmap.getHeight());
+                }
+
+                if (row == rows - 1) {
+                    // bottom side piece
+                    path.lineTo(offsetX, pieceBitmap.getHeight());
+                } else {
+                    // bottom bump
+                    path.lineTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 3 * 2, pieceBitmap.getHeight());
+                    path.cubicTo(offsetX + (pieceBitmap.getWidth() - offsetX) / 6 * 5, pieceBitmap.getHeight() - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 6, pieceBitmap.getHeight() - bumpSize, offsetX + (pieceBitmap.getWidth() - offsetX) / 3, pieceBitmap.getHeight());
+                    path.lineTo(offsetX, pieceBitmap.getHeight());
+                }
+
+                if (col == 0) {
+                    // left side piece
+                    path.close();
+                } else {
+                    // left bump
+                    path.lineTo(offsetX, offsetY + (pieceBitmap.getHeight() - offsetY) / 3 * 2);
+                    path.cubicTo(offsetX - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6 * 5, offsetX - bumpSize, offsetY + (pieceBitmap.getHeight() - offsetY) / 6, offsetX, offsetY + (pieceBitmap.getHeight() - offsetY) / 3);
+                    path.close();
+                }
+
+                // mask the piece
+                Paint paint = new Paint();
+                paint.setColor(0XFF000000);
+                paint.setStyle(Paint.Style.FILL);
+
+                canvas.drawPath(path, paint);
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+                canvas.drawBitmap(pieceBitmap, 0, 0, paint);
+
+                // draw a white border
+                Paint border = new Paint();
+                border.setColor(0X80FFFFFF);
+                border.setStyle(Paint.Style.STROKE);
+                border.setStrokeWidth(8.0f);
+                canvas.drawPath(path, border);
+
+                // draw a black border
+                border = new Paint();
+                border.setColor(0X80000000);
+                border.setStyle(Paint.Style.STROKE);
+                border.setStrokeWidth(3.0f);
+                canvas.drawPath(path, border);
+
+                // set the resulting bitmap to the piece
+                piece.setImageBitmap(puzzlePiece);
+                pieces.add(piece);
+                xCoord += pieceWidth;
             }
+            yCoord += pieceHeight;
+        }
 
 
         return pieces;
@@ -402,23 +473,81 @@ public class PuzzleActivity extends AppCompatActivity {
                 matrix, true);
     }
 
+    public void openWinDialog(){
+        win_dialog.setContentView(R.layout.win_dialog);
+        lottieAnimationView.setVisibility(View.INVISIBLE);
+
+        //ImageView imageView=findViewById(R.id.imageView2);
+        EditText editText=win_dialog.findViewById(R.id.name_ET);
+        Button buttonOk=win_dialog.findViewById(R.id.buttonOk);
+        win_dialog.show();
+    }
+
+    public void openPauseDialog(){
+        pause_dialog.setContentView(R.layout.pause_dialog);
+        TextView textToResume=pause_dialog.findViewById(R.id.resume_tv);
+        Button resume=pause_dialog.findViewById(R.id.resume_btn);
+        pause_dialog.show();
+        pause_dialog.setCancelable(false);
+
+        resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //resume the game
+                pause_dialog.cancel();
+                startChronometer(v);
+            }
+        });
+    }
+
+
+
     public void checkGameOver() {
         if (isGameOver()) {
-            finish();
+            //  finish();
         }
     }
 
     private boolean isGameOver() {
         for (PuzzlePieces piece : pieces) {
             if (piece.canMove) {
+
                 return false;
             }
         }
 
+        openWinDialog();
+        pause_dialog.setCancelable(false);
         return true;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("music", isMuted).commit();
+        manageMusic(true);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        manageMusic(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        manageMusic(false);
+    }
+
+    public void manageMusic(boolean forceShutdown) {
+        if ( isMuted || forceShutdown)
+            MusicPlayer.pause();
+        else
+            MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
+    }
 }
 
 

@@ -19,48 +19,36 @@ public class FirstScreenActivity extends AppCompatActivity {
     Button playBtn;
     Button aboutBtn;
     Button recordsBtn;
-    static boolean musicClicked=true;
-    MediaPlayer mediaPlayer;
+    static boolean isMuted =false;
     SharedPreferences sp;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-       setContentView(R.layout.activity_firstscreen);
-
+        setContentView(R.layout.activity_firstscreen);
         playBtn=findViewById(R.id.play_btn);
         aboutBtn=findViewById(R.id.about_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
-        //Initiate Music Background
-        mediaPlayer = MediaPlayer.create(this,R.raw.feeling_free);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100,100);
-        mediaPlayer.start();
+        sp = getSharedPreferences("music",MODE_PRIVATE);
+        manageMusic(false);
         FloatingActionButton musicBtn = findViewById(R.id.musicButton);
         musicBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (musicClicked)
+                isMuted = !isMuted;
+                if (isMuted)
                 {
                     //Pause/Stop music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(FirstScreenActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_off);
-                    mediaPlayer.pause();
+                    manageMusic(true);
+                    musicBtn.setImageResource(R.drawable.music_off);
 
                 }
                 else
                 {
                     //Recover music
-                    musicClicked=!musicClicked;
-                    FloatingActionButton i = new FloatingActionButton(FirstScreenActivity.this);
-                    i = findViewById(R.id.musicButton);
-                    i.setImageResource(R.drawable.music_on);
-                    mediaPlayer.start();
-
+                    manageMusic(false);
+                    musicBtn.setImageResource(R.drawable.music_on);
                 }
             }
         });
@@ -71,7 +59,6 @@ public class FirstScreenActivity extends AppCompatActivity {
                 Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
                 sp = getSharedPreferences("music",MODE_PRIVATE);
                 startActivity(intent);
-
 
             }
         });
@@ -94,34 +81,29 @@ public class FirstScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mediaPlayer.start();
-
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("music",musicClicked).commit();
-        mediaPlayer.stop();
+        editor.putBoolean("music", isMuted).commit();
+        manageMusic(true);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
+    protected void onResume() {
+        super.onResume();
+        manageMusic(false);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public void onBackPressed() {
+        super.onBackPressed();
+        manageMusic(false);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mediaPlayer.release();
+    public void manageMusic(boolean forceShutdown) {
+        if ( isMuted || forceShutdown)
+            MusicPlayer.pause();
+        else
+            MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
 }
