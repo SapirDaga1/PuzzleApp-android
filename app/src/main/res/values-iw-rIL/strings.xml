@@ -19,4 +19,8 @@
     <string name="name_hint">הכנס את שמך</string>
     <string name="ok_hint">שלח</string>
     <string name="resume_hint">לחץ על \"שחק\" כדי להמשיך</string>
+    <string name="homepage">הינך נמצא בדף הבית</string>
+    <string name="clue">בחרת בשימוש ברמז השתמשת ב</string>
+    <string name="points">" נקודות"</string>
+    <string name="home_page">דף הבית</string>
 </resources>

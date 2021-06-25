@@ -3,6 +3,7 @@ package il.org.puzzeling;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import static java.lang.Math.pow;
@@ -51,6 +52,7 @@ public class TouchListener implements View.OnTouchListener {
                     lParams.topMargin = piece.yCoord;
                     piece.setLayoutParams(lParams);
                     piece.canMove = false;
+                    piece.startAnimation(AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.pulse));
                     sendViewToBack(piece);
                     activity.checkGameOver();
                 }

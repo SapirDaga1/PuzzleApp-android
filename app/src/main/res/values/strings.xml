@@ -27,5 +27,9 @@
     <string name="name_hint">Enter your name</string>
     <string name="ok_hint">OK</string>
     <string name="resume_hint">Press on \"PLAY\" to resume</string>
+    <string name="homepage">Already in home page</string>
+    <string name="clue">You\'ve Chosen to pick clue, used</string>
+    <string name="points">points</string>
+    <string name="home_page">Home Page</string>
 </resources>
 

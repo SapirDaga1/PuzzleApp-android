@@ -13,6 +13,9 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,29 +55,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
-        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
-        if (isMuted)
-            musicBtn.setImageResource(R.drawable.music_off);
-
-        musicBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                isMuted =!isMuted;
-                if (isMuted)
-                {
-                    //Pause/Stop music
-                    manageMusic(true);
-                    musicBtn.setImageResource(R.drawable.music_off);
-
-                }
-                else
-                {
-                    //Recover music
-                    manageMusic(false);
-                    musicBtn.setImageResource(R.drawable.music_on);
-                }
-            }
-        });
         AssetManager am = getAssets();
         try {
             final String[] files = am.list("img");
@@ -283,6 +263,49 @@ public class MainActivity extends AppCompatActivity {
             MusicPlayer.pause();
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu1, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.sound_icon);
+        if (isMuted)
+            item.setIcon(R.drawable.ic_no_music_btn);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sound_icon:
+                isMuted = !isMuted;
+
+                if (isMuted)
+                {
+                    manageMusic(true);
+                    item.setIcon(R.drawable.ic_no_music_btn);
+                }
+                else
+                {
+                    manageMusic(false);
+                    item.setIcon(R.drawable.ic_music_btn);
+                }
+            break;
+            case R.id.home_icon:
+                Intent intent= new Intent(MainActivity.this,FirstScreenActivity.class);
+                finishAffinity();
+                startActivity(intent);
+                break;
+
+
+        }
+        return true;
     }
 }
 
