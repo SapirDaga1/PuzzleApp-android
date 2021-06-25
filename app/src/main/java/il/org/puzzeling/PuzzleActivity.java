@@ -20,6 +20,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -49,7 +52,9 @@ public class PuzzleActivity extends AppCompatActivity {
     String mCurrentPhotoUri;
     String  mCurrentPhoto;
     SharedPreferences sp;
-    boolean musicClicked;
+    static  boolean Clue = false;
+    static int points = 0;
+    Chronometer simpleChronometer; //stopper
 
 
     //------Timer----------//
@@ -76,30 +81,6 @@ public class PuzzleActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
-        ImageButton musicBtn = findViewById(R.id.musicButton);
-        if (isMuted)
-            musicBtn.setImageResource(R.drawable.ic_no_music_btn);
-        musicBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                isMuted= !isMuted;
-                if (isMuted)
-                {
-                    //Pause/Stop music
-                    manageMusic(true);
-                    musicBtn.setImageResource(R.drawable.ic_no_music_btn);
-
-                }
-                else
-                {
-                    //Recover music
-                    manageMusic(false);
-                    musicBtn.setImageResource(R.drawable.ic_music_btn);
-                }
-            }
-        });
-
-
         final RelativeLayout layout = findViewById(R.id.layout);
         final ImageView imageView = findViewById(R.id.imageView);
         imageView.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
@@ -533,6 +514,62 @@ public class PuzzleActivity extends AppCompatActivity {
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_puzzle, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.sound_icon);
+        if (isMuted)
+            item.setIcon(R.drawable.ic_no_music_btn);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clue:
+                Clue = true;
+                ImageView imageView = findViewById(R.id.imageView);
+                if(Clue) {
+                    imageView.setVisibility(View.VISIBLE);
+                    Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points + getString(R.string.points), Toast.LENGTH_SHORT).show();
+                } else {
+                    imageView.setVisibility(View.INVISIBLE);
+                }
+
+                break;
+            case R.id.sound_icon:
+                isMuted = !isMuted;
+
+                if (isMuted)
+                {
+                    manageMusic(true);
+                    item.setIcon(R.drawable.ic_no_music_btn);
+                }
+                else
+                {
+                    manageMusic(false);
+                    item.setIcon(R.drawable.ic_music_btn);
+                }
+                break;
+            case R.id.home_icon:
+                Intent intent= new Intent(PuzzleActivity.this,FirstScreenActivity.class);
+                finishAffinity();
+                startActivity(intent);
+                break;
+
+
+
+        }
+        return true;
+    }
+
 }
 
 
