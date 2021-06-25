@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PuzzleActivity"
-
     >
     <ImageView
         android:layout_width="0dp"
@@ -22,6 +21,7 @@
         app:layout_constraintTop_toTopOf="@id/imageView"
         app:srcCompat="@drawable/puzzle_frame" />
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -31,6 +31,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -41,6 +42,7 @@
         app:srcCompat="@drawable/aaaaa"
         android:alpha="0.2"
         android:visibility="invisible">
+
 
     </ImageView>
 
@@ -56,40 +58,39 @@
         //----Timer----//
 
         <LinearLayout
+            android:id="@+id/timer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/timer_layout">
+            android:padding="20dp">
+
+
+            <Button
+                android:layout_width="41dp"
+                android:layout_height="39dp"
+                android:background="@drawable/ic_pause_button"
+                android:onClick="pauseChronometer" />
+
+
             <Chronometer
                 android:id="@+id/chronometer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30sp" />
+                android:layout_width="117dp"
+                android:layout_height="65dp"
+                android:background="@drawable/ic_clock_without_up"
+                android:padding="15dp"
+                android:src="@drawable/ic_clock_with_up"
+                android:textSize="22sp"
+                android:textStyle="bold"
+
+                android:fontFamily="@font/font3"/>
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="startChronometer"
-                android:text="Start" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="pauseChronometer"
-                android:text="Pause" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="resetChronometer"
-                android:text="Reset" />
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/countdown_anim"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:lottie_rawRes="@raw/countdown"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="false"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_stop_button"
+                android:onClick="resetChronometer" />
+
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>

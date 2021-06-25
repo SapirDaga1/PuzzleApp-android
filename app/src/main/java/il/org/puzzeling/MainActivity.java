@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.File;
@@ -39,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
     SharedPreferences sp;
+
+    private static final long DEFAULT_DURATION_MILLIS = 2000L;
+    private long duration = DEFAULT_DURATION_MILLIS;
+
     GridView grid;
     ImageView imageView;
     boolean musicClicked;
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
+
         AssetManager am = getAssets();
         try {
             final String[] files = am.list("img");

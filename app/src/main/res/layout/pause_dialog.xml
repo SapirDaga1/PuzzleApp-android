@@ -31,16 +31,12 @@
             android:fontFamily="@font/font3"
             ></TextView>
         <Button
-            android:id="@+id/resume_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_button"
-            android:fontFamily="@font/font1"
-            android:textSize="25sp"
-            android:text="@string/play_btn"
-            android:textColor="@color/white"
-
+            android:background="@drawable/ic_play_button"
+            android:id="@+id/play_btn"
+            android:layout_gravity="center_horizontal"
+            android:onClick="startChronometer"
             />
 
     </LinearLayout>

@@ -1,11 +1,10 @@
 package il.org.puzzeling;
 
-import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,10 +16,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,33 +27,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Random;
 import java.io.InputStream;
 import android.net.Uri;
-
 import android.media.ExifInterface;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import com.airbnb.lottie.LottieAnimationView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
 import static java.lang.Math.abs;
 
@@ -70,9 +56,11 @@ public class PuzzleActivity extends AppCompatActivity {
     static int points = 0;
     Chronometer simpleChronometer; //stopper
 
+
     //------Timer----------//
     private Chronometer chronometer;
-    private long pauseOffset;
+
+    long timeWhenStopped = 0;
     private boolean running;
 
     LottieAnimationView lottieAnimationView;
@@ -85,19 +73,23 @@ public class PuzzleActivity extends AppCompatActivity {
     public int num; //num of pieces
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
         final RelativeLayout layout = findViewById(R.id.layout);
         final ImageView imageView = findViewById(R.id.imageView);
+        imageView.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
 
         //------Timer------//
 
         chronometer = findViewById(R.id.chronometer);
-        chronometer.setFormat("Time: %s");
+        chronometer.setFormat("%s");
+
         chronometer.setBase(SystemClock.elapsedRealtime());
 
 
@@ -108,8 +100,8 @@ public class PuzzleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String assetName = intent.getStringExtra("assetName");
 
-        lottieAnimationView = findViewById(R.id.countdown_anim);
-        lottieAnimationView.setVisibility(View.VISIBLE);
+        //lottieAnimationView = findViewById(R.id.countdown_anim);
+       // lottieAnimationView.setVisibility(View.VISIBLE);
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
@@ -157,7 +149,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void startChronometer(View v) {
         if (!running) {
-            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.setBase(SystemClock.elapsedRealtime() +timeWhenStopped);
             chronometer.start();
             running = true;
         }
@@ -166,7 +158,6 @@ public class PuzzleActivity extends AppCompatActivity {
     public void pauseChronometer(View v) {
         if (running) {
             chronometer.stop();
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
             running = false;
             openPauseDialog();
 
@@ -175,7 +166,7 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset = 0;
+        timeWhenStopped = 0;
        //reset the activity
         finish();
         startActivity(getIntent());
@@ -351,7 +342,6 @@ public class PuzzleActivity extends AppCompatActivity {
             yCoord += pieceHeight;
         }
 
-
         return pieces;
     }
 
@@ -449,18 +439,19 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void openWinDialog(){
         win_dialog.setContentView(R.layout.win_dialog);
-        lottieAnimationView.setVisibility(View.INVISIBLE);
+       // lottieAnimationView.setVisibility(View.INVISIBLE);
 
         //ImageView imageView=findViewById(R.id.imageView2);
         EditText editText=win_dialog.findViewById(R.id.name_ET);
         Button buttonOk=win_dialog.findViewById(R.id.buttonOk);
         win_dialog.show();
+
     }
 
     public void openPauseDialog(){
         pause_dialog.setContentView(R.layout.pause_dialog);
         TextView textToResume=pause_dialog.findViewById(R.id.resume_tv);
-        Button resume=pause_dialog.findViewById(R.id.resume_btn);
+        Button resume=pause_dialog.findViewById(R.id.play_btn);
         pause_dialog.show();
         pause_dialog.setCancelable(false);
 
@@ -470,6 +461,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
                 //resume the game
                 pause_dialog.cancel();
+                timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
                 startChronometer(v);
             }
         });
@@ -490,7 +482,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 return false;
             }
         }
-
+        chronometer.stop();
         openWinDialog();
         pause_dialog.setCancelable(false);
         return true;

@@ -10,10 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Map;
@@ -32,9 +31,11 @@ public class
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstscreen);
+
         playBtn=findViewById(R.id.play_btn);
         aboutBtn=findViewById(R.id.about_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
+
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
         //moving to puzzleActivity

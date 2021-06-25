@@ -9,63 +9,62 @@
     android:id="@+id/first_screen_layout"
     android:background="@drawable/first_screen_photo">
     <LinearLayout
+        android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/home_layout"
         android:orientation="vertical"
-        android:paddingTop="170dp">
+        android:paddingTop="130dp">
 
         <Button
-            android:id="@+id/about_btn"
-            android:layout_width="133dp"
+            android:id="@+id/play_btn"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="140dp"
+            android:background="@drawable/ic_yellow_puzzle_button"
             android:fontFamily="@font/font3"
-            android:background="@drawable/ic_small_piece2"
-            android:text="@string/about_btn"
-            android:backgroundTint="@color/black"
+            android:text="@string/play_btn"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/play_btn"
-            android:layout_width="113dp"
+            android:id="@+id/about_btn"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/about_btn"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="129dp"
+            android:layout_marginStart="130dp"
+            android:background="@drawable/ic_red_puzzle_button"
             android:fontFamily="@font/font3"
-            android:backgroundTint="@color/black"
+            android:text="@string/about_btn"
             android:textColor="@color/black"
-            android:background="@drawable/ic_small_piece1"
-            android:text="@string/play_btn"
-
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/recordsBtn"
-            android:layout_width="145dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/play_btn"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="115dp"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/black"
+            android:layout_marginStart="139dp"
+
+            android:background="@drawable/ic_green_puzzle_btn"
             android:fontFamily="@font/font3"
-            android:background="@drawable/ic_small_piece2"
             android:text="@string/records_btn"
+            android:textColor="@color/black"
 
             android:textSize="20sp" />
     </LinearLayout>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="195dp"
-        android:layout_marginTop="260dp"
-        app:lottie_rawRes="@raw/owl"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="140dp"
+        android:paddingTop="330dp"
+        app:lottie_rawRes="@raw/bluebird"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"/>
 
