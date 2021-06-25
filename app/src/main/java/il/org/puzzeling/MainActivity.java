@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.File;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
     SharedPreferences sp;
+
+    private static final long DEFAULT_DURATION_MILLIS = 2000L;
+    private long duration = DEFAULT_DURATION_MILLIS;
+
     GridView grid;
     ImageView imageView;
     boolean musicClicked;
@@ -52,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
-        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        ImageButton musicBtn = findViewById(R.id.musicButton);
         if (isMuted)
-            musicBtn.setImageResource(R.drawable.music_off);
+            musicBtn.setImageResource(R.drawable.ic_no_music_btn);
 
         musicBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -64,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
                 {
                     //Pause/Stop music
                     manageMusic(true);
-                    musicBtn.setImageResource(R.drawable.music_off);
+                    musicBtn.setImageResource(R.drawable.ic_no_music_btn);
 
                 }
                 else
                 {
                     //Recover music
                     manageMusic(false);
-                    musicBtn.setImageResource(R.drawable.music_on);
+                    musicBtn.setImageResource(R.drawable.ic_music_btn);
                 }
             }
         });

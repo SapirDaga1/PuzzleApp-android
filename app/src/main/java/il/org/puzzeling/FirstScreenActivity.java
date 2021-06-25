@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,12 +28,14 @@ public class FirstScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstscreen);
+
         playBtn=findViewById(R.id.play_btn);
         aboutBtn=findViewById(R.id.about_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
+
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
-        FloatingActionButton musicBtn = findViewById(R.id.musicButton);
+        ImageButton musicBtn = findViewById(R.id.musicButton);
         musicBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -41,14 +44,14 @@ public class FirstScreenActivity extends AppCompatActivity {
                 {
                     //Pause/Stop music
                     manageMusic(true);
-                    musicBtn.setImageResource(R.drawable.music_off);
+                    musicBtn.setImageResource(R.drawable.ic_no_music_btn);
 
                 }
                 else
                 {
                     //Recover music
                     manageMusic(false);
-                    musicBtn.setImageResource(R.drawable.music_on);
+                    musicBtn.setImageResource(R.drawable.ic_music_btn);
                 }
             }
         });

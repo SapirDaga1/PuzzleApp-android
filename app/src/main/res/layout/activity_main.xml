@@ -13,20 +13,20 @@
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:horizontalSpacing="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="22dp"
+        android:horizontalSpacing="12dp"
         android:numColumns="2"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="12dp"
         android:paddingVertical="10dp"
         android:verticalSpacing="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
         android:id="@+id/musicButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,8 +35,8 @@
         android:layout_marginRight="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/music_on"
-        android:tint="@android:color/white"
+        android:src="@drawable/ic_music_btn"
+        android:background="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

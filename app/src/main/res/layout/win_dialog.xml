@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/ic_play_button"
             android:fontFamily="@font/font1"
             android:text="@string/ok_hint"
             android:textColor="@color/white"
