@@ -93,7 +93,7 @@ public class PuzzleActivity extends AppCompatActivity {
         chronometer.setBase(SystemClock.elapsedRealtime());
 
 
-        //--------finish game dialog--------//
+        //--------finish game dialog--------//0
         win_dialog = new Dialog(this);
         pause_dialog= new Dialog(this);
 

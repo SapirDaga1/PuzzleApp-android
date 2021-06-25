@@ -8,53 +8,91 @@
     tools:context=".FirstScreenActivity"
     android:id="@+id/first_screen_layout"
     android:background="@drawable/first_screen_photo">
-    <LinearLayout
-        android:id="@+id/home_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="130dp">
 
+        <!--Play Button-->
+    <RelativeLayout
+        android:id="@+id/play_combine"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp">
         <Button
             android:id="@+id/play_btn"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="140dp"
             android:background="@drawable/ic_yellow_puzzle_button"
             android:fontFamily="@font/font3"
             android:text="@string/play_btn"
             android:textColor="@color/black"
             android:textSize="20sp" />
-
+        <ImageView
+            android:id="@+id/shine_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shine_effect"
+            />
+    </RelativeLayout>
+    <!-- End Play button -->
+    <!-- About Button-->
+    <RelativeLayout
+        android:id="@+id/about_combine"
+        android:layout_width="140dp"
+        android:layout_below="@+id/play_combine"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
         <Button
             android:id="@+id/about_btn"
-            android:layout_width="140dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/about_btn"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="130dp"
             android:background="@drawable/ic_red_puzzle_button"
             android:fontFamily="@font/font3"
             android:text="@string/about_btn"
             android:textColor="@color/black"
             android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/shine_about"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-50dp"
+            android:src="@drawable/shine_effect"
+            />
+</RelativeLayout>
 
-        <Button
-            android:id="@+id/recordsBtn"
+
+        <!--About button End-->
+        <!--Records Button-->
+        <RelativeLayout
+            android:id="@+id/records_combine"
+            android:layout_below="@+id/about_combine"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/play_btn"
+            android:layout_centerInParent="true">
+        <Button
+            android:id="@+id/recordsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="139dp"
-
             android:background="@drawable/ic_green_puzzle_btn"
             android:fontFamily="@font/font3"
             android:text="@string/records_btn"
             android:textColor="@color/black"
 
             android:textSize="20sp" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/shine_record"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-50dp"
+                android:src="@drawable/shine_effect"
+                />
+
+
+        </RelativeLayout>
+        <!--Records Button End-->
+
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -62,10 +100,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
         android:layout_marginStart="2dp"
-        android:layout_marginBottom="140dp"
-        android:paddingTop="330dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignTop="@id/about_combine"
+        android:paddingTop="160dp"
         app:lottie_rawRes="@raw/bluebird"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"/>
+
 
 </RelativeLayout>

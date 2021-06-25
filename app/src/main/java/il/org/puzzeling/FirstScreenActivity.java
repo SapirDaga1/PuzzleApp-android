@@ -8,7 +8,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ImageButton;
 import androidx.annotation.Nullable;
@@ -23,6 +28,9 @@ public class
     Button playBtn;
     Button aboutBtn;
     Button recordsBtn;
+    ImageView playShine;
+    ImageView aboutShine;
+    ImageView recordsShine;
     static boolean isMuted =false;
     SharedPreferences sp;
 
@@ -35,7 +43,12 @@ public class
         playBtn=findViewById(R.id.play_btn);
         aboutBtn=findViewById(R.id.about_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
-
+        playShine = findViewById(R.id.shine_play);
+        aboutShine = findViewById(R.id.shine_about);
+        recordsShine = findViewById(R.id.shine_record);
+        shineAnimation(playBtn,playShine);
+        shineAnimation(aboutBtn,aboutShine);
+        shineAnimation(recordsBtn,recordsShine);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
         //moving to puzzleActivity
@@ -134,4 +147,14 @@ public class
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
+    private void shineAnimation(Button btn, ImageView shine) {
+
+        Animation animation = new TranslateAnimation(0, btn.getWidth()+shine.getWidth(),0, 0);
+        animation.setDuration(1500);
+        animation.setFillAfter(true);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        shine.startAnimation(animation);
+
+}
+
 }

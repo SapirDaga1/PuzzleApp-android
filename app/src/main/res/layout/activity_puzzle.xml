@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:alpha="1.0"
         app:layout_constraintDimensionRatio="H,4:5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,9 +29,8 @@
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:scaleType="centerCrop"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -45,7 +44,6 @@
 
 
     </ImageView>
-
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
@@ -55,13 +53,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        //----Timer----//
+
+        <!-- Timer -->
 
         <LinearLayout
             android:id="@+id/timer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            >
 
 
             <Button
@@ -76,12 +79,11 @@
                 android:layout_width="117dp"
                 android:layout_height="65dp"
                 android:background="@drawable/ic_clock_without_up"
+                android:fontFamily="@font/font3"
                 android:padding="15dp"
                 android:src="@drawable/ic_clock_with_up"
                 android:textSize="22sp"
-                android:textStyle="bold"
-
-                android:fontFamily="@font/font3"/>
+                android:textStyle="bold" />
 
             <Button
                 android:layout_width="40dp"
