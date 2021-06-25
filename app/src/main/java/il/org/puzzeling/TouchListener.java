@@ -1,5 +1,6 @@
 package il.org.puzzeling;
 
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class TouchListener implements View.OnTouchListener {
     public TouchListener(PuzzleActivity activity) {
         this.activity = activity;
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -39,7 +41,7 @@ public class TouchListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                lParams.leftMargin = (int) (x - deltaX);
+                lParams.leftMargin =  (int) (x - deltaX);
                 lParams.topMargin = (int) (y - deltaY);
                 v.setLayoutParams(lParams);
                 break;
