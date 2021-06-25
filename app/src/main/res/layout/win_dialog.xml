@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-   android:id="@+id/win_layout">
+   android:id="@+id/win_layout"
+    >
 
     <LinearLayout
         android:layout_width="370dp"
         android:layout_height="372dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
 
-
+        >
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/winner_anim"
@@ -30,19 +31,40 @@
             android:fontFamily="@font/font1"
             android:hint="@string/name_hint"
             android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/buttonOk"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+
+            <Button
+                android:id="@+id/buttonBackHome"
+                android:layout_width="56dp"
+                android:layout_height="52dp"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_home_button"
+
+                />
+
+            <Button
+            android:id="@+id/buttonOk"
+                android:layout_width="56dp"
+                android:layout_height="52dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_play_button"
-            android:fontFamily="@font/font1"
-            android:text="@string/ok_hint"
-            android:textColor="@color/white"
 
             />
+        <Button
+            android:id="@+id/buttonRecords"
+            android:layout_width="56dp"
+            android:layout_height="52dp"
+            android:gravity="end"
+           android:background="@drawable/ic_score_button">
 
+        </Button>
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

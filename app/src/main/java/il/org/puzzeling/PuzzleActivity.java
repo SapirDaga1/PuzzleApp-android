@@ -73,11 +73,14 @@ public class PuzzleActivity extends AppCompatActivity {
     public int num; //num of pieces
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+
+
 
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
@@ -157,6 +160,7 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public void pauseChronometer(View v) {
         if (running) {
+            timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
             chronometer.stop();
             running = false;
             openPauseDialog();
@@ -168,7 +172,7 @@ public class PuzzleActivity extends AppCompatActivity {
         chronometer.setBase(SystemClock.elapsedRealtime());
         timeWhenStopped = 0;
        //reset the activity
-        finish();
+        finishAffinity();
         startActivity(getIntent());
     }
 
@@ -439,12 +443,22 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void openWinDialog(){
         win_dialog.setContentView(R.layout.win_dialog);
-       // lottieAnimationView.setVisibility(View.INVISIBLE);
-
-        //ImageView imageView=findViewById(R.id.imageView2);
         EditText editText=win_dialog.findViewById(R.id.name_ET);
         Button buttonOk=win_dialog.findViewById(R.id.buttonOk);
+        Button recordBtn=win_dialog.findViewById(R.id.recordsBtn);
+        Button homeBtn=win_dialog.findViewById(R.id.buttonBackHome);
         win_dialog.show();
+        win_dialog.setCancelable(true);
+
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(PuzzleActivity.this,FirstScreenActivity.class);
+                finishAffinity();
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -504,7 +518,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
         manageMusic(false);
     }
 
@@ -539,7 +553,9 @@ public class PuzzleActivity extends AppCompatActivity {
                 if(Clue) {
                     imageView.setVisibility(View.VISIBLE);
                     Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points + getString(R.string.points), Toast.LENGTH_SHORT).show();
+                    item.setIcon(R.drawable.ic_no_hint_bulb_button);
                 } else {
+                    item.setIcon(R.drawable.ic_hint_bulb_button);
                     imageView.setVisibility(View.INVISIBLE);
                 }
 
@@ -563,6 +579,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 finishAffinity();
                 startActivity(intent);
                 break;
+
 
 
 

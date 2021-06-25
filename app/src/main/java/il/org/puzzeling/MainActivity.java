@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
-    String [] items;
+    String[] items;
     int choice = 4; //default choice is easy level
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sp = getSharedPreferences("music",MODE_PRIVATE);
+        sp = getSharedPreferences("music", MODE_PRIVATE);
         manageMusic(false);
 
         AssetManager am = getAssets();
@@ -82,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
     }
+
     //choosing level
     public void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle(R.string.level_hint);
-        Resources res =getResources();
-       items= res.getStringArray(R.array.levels);
+        Resources res = getResources();
+        items = res.getStringArray(R.array.levels);
         int checkedItem = 0;// first item in items array
         alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
             @Override
@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
 
 
-                if(REQUEST_IMAGE_GALLERY==4) {
+                if (REQUEST_IMAGE_GALLERY == 4) {
                     intent.putExtra("level", choice);
                     intent.putExtra("assetName", mCurrentPhoto);
                 }
 
-                if(REQUEST_IMAGE_CAPTURE==1) {
+                if (REQUEST_IMAGE_CAPTURE == 1) {
                     intent.putExtra("level", choice);
                     intent.putExtra("assetName", mCurrentPhoto);
                 }
@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //back to same activity
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                finishAffinity();
                 startActivity(intent);
 
             }
@@ -217,26 +218,26 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Intent intent= new Intent(this,PuzzleActivity.class);
+            Intent intent = new Intent(this, PuzzleActivity.class);
             intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
-            intent.putExtra("level",choice);
+            intent.putExtra("level", choice);
             startActivity(intent);
 
         }
 
         if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
-            Intent intent= new Intent(this,PuzzleActivity.class);
+            Intent intent = new Intent(this, PuzzleActivity.class);
             intent.putExtra("mCurrentPhotoUri", uri.toString());
-            intent.putExtra("level",choice);
+            intent.putExtra("level", choice);
             startActivity(intent);
 
-                }
-            }
+        }
+    }
 
     public void onImageFromGalleryClick(View view) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
@@ -260,16 +261,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
         manageMusic(false);
     }
 
     public void manageMusic(boolean forceShutdown) {
-        if ( isMuted || forceShutdown)
+        if (isMuted || forceShutdown)
             MusicPlayer.pause();
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -292,19 +294,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.sound_icon:
                 isMuted = !isMuted;
 
-                if (isMuted)
-                {
+                if (isMuted) {
                     manageMusic(true);
                     item.setIcon(R.drawable.ic_no_music_btn);
-                }
-                else
-                {
+                } else {
                     manageMusic(false);
                     item.setIcon(R.drawable.ic_music_btn);
                 }
-            break;
+                break;
             case R.id.home_icon:
-                Intent intent= new Intent(MainActivity.this,FirstScreenActivity.class);
+                Intent intent = new Intent(MainActivity.this, FirstScreenActivity.class);
                 finishAffinity();
                 startActivity(intent);
                 break;
@@ -313,5 +312,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-}
 
+}
