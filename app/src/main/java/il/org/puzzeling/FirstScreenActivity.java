@@ -55,6 +55,7 @@ public class
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pulse));
                 Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
                 sp = getSharedPreferences("music",MODE_PRIVATE);
                 startActivity(intent);
@@ -66,7 +67,7 @@ public class
         recordsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                recordsBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
             }
         });
 
@@ -74,7 +75,7 @@ public class
         aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                aboutBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
             }
         });
     }
