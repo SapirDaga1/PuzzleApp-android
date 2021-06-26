@@ -5,8 +5,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import static il.org.puzzeling.MainActivity.FLAG_LEVEL;
+import static il.org.puzzeling.MainActivity.points;
+import static il.org.puzzeling.MainActivity.score;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 import static java.lang.StrictMath.abs;
@@ -57,6 +61,8 @@ public class TouchListener implements View.OnTouchListener {
                     piece.setLayoutParams(lParams);
                     piece.canMove = false;
                     piece.startAnimation(AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.pulse));
+                    score = score+ points*FLAG_LEVEL;
+                    PuzzleActivity.syncScore();
                     sendViewToBack(piece);
                     activity.checkGameOver();
                 }

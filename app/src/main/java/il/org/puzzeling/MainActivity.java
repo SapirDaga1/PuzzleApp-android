@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,13 +44,14 @@ public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
     SharedPreferences sp;
+    static int FLAG_LEVEL=1;
+    static int score;
+    static int points=10;;
 
     private static final long DEFAULT_DURATION_MILLIS = 2000L;
     private long duration = DEFAULT_DURATION_MILLIS;
 
     GridView grid;
-    ImageView imageView;
-    boolean musicClicked;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
@@ -108,19 +110,22 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         choice = 4;
                         Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
-
+                        FLAG_LEVEL=1;
                         break;
                     case 1:
                         choice = 5;
                         Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
+                        FLAG_LEVEL=2;
                         break;
                     case 2:
                         choice = 6;
                         Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
+                        FLAG_LEVEL=3;
                         break;
                     case 3:
                         choice = 7;
                         Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
+                        FLAG_LEVEL=4;
                         break;
                 }
             }

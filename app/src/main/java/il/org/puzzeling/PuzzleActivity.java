@@ -1,5 +1,6 @@
 package il.org.puzzeling;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.Random;
 import java.io.InputStream;
@@ -45,9 +47,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.airbnb.lottie.LottieAnimationView;
 import java.util.ArrayList;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
+import static il.org.puzzeling.MainActivity.FLAG_LEVEL;
+import static il.org.puzzeling.MainActivity.points;
+import static il.org.puzzeling.MainActivity.score;
 import static java.lang.Math.abs;
 
 public class PuzzleActivity extends AppCompatActivity {
+
 
     ArrayList<PuzzlePieces> pieces;
     String mCurrentPhotoPath;
@@ -55,7 +61,9 @@ public class PuzzleActivity extends AppCompatActivity {
     String  mCurrentPhoto;
     SharedPreferences sp;
     static  boolean Clue = false;
-    static int points = 0;
+    @SuppressLint("StaticFieldLeak")
+    public static EditText score_et;
+    boolean once = true;
     Chronometer simpleChronometer; //stopper
 
 
@@ -81,23 +89,17 @@ public class PuzzleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
-
-
-
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
         final RelativeLayout layout = findViewById(R.id.layout);
         final ImageView imageView = findViewById(R.id.imageView);
+        score_et= findViewById(R.id.score_et);
         imageView.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
 
         //------Timer------//
-
         chronometer = findViewById(R.id.chronometer);
         chronometer.setFormat("%s");
-
         chronometer.setBase(SystemClock.elapsedRealtime());
-
-
         //--------finish game dialog--------//0
         win_dialog = new Dialog(this);
         pause_dialog= new Dialog(this);
@@ -167,8 +169,6 @@ public class PuzzleActivity extends AppCompatActivity {
             chronometer.stop();
             running = false;
             openPauseDialog();
-
-
         }
     }
     public void resetChronometer(View v) {
@@ -554,13 +554,15 @@ public class PuzzleActivity extends AppCompatActivity {
             case R.id.clue:
                 Clue = true;
                 ImageView imageView = findViewById(R.id.imageView);
-                if(Clue) {
+                if(Clue && once) {
                     imageView.setVisibility(View.VISIBLE);
-                    Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points + getString(R.string.points), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points*5*FLAG_LEVEL + getString(R.string.points), Toast.LENGTH_SHORT).show();
+                    score = score - points*5*FLAG_LEVEL;
                     item.setIcon(R.drawable.ic_no_hint_bulb_button);
-                } else {
-                    item.setIcon(R.drawable.ic_hint_bulb_button);
-                    imageView.setVisibility(View.INVISIBLE);
+                    syncScore();
+                    once=false;
+                }
+                else {
                 }
 
                 break;
@@ -590,7 +592,9 @@ public class PuzzleActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    public static void syncScore(){
+        score_et.setText(score + "");
+    }
 }
 
 
