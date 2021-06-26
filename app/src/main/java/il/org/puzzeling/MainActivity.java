@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +17,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
     String[] items;
+    Dialog level_dialog;
     int choice = 4; //default choice is easy level
 
     @Override
@@ -60,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("music", MODE_PRIVATE);
         manageMusic(false);
+
+        //dialog for choosing level
+        level_dialog = new Dialog(this);
 
         AssetManager am = getAssets();
         try {
@@ -82,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
     }
+
 
     //choosing level
     public void showAlertDialog() {
@@ -218,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
             Intent intent = new Intent(this, PuzzleActivity.class);
             intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
             intent.putExtra("level", choice);
@@ -236,13 +247,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onImageFromGalleryClick(View view) {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-        } else {
+        }
+        else {
+
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
         }
+
     }
 
     @Override

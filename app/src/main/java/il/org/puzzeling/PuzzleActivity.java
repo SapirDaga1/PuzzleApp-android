@@ -40,6 +40,8 @@ import android.net.Uri;
 import android.media.ExifInterface;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import java.util.ArrayList;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
@@ -148,6 +150,7 @@ public class PuzzleActivity extends AppCompatActivity {
         });
 
     }
+
 
 
     public void startChronometer(View v) {
@@ -345,6 +348,7 @@ public class PuzzleActivity extends AppCompatActivity {
             }
             yCoord += pieceHeight;
         }
+
 
         return pieces;
     }
