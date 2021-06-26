@@ -2,10 +2,64 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PuzzleActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <!-- Timer -->
+
+        <LinearLayout
+            android:id="@+id/timer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="47dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:layout_width="41dp"
+                android:layout_height="39dp"
+                android:background="@drawable/ic_pause_button"
+                android:onClick="pauseChronometer" />
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="89dp"
+                android:layout_height="71dp"
+                android:background="@drawable/ic_clock_without_up"
+                android:fontFamily="@font/font2"
+                android:padding="15dp"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_stop_button"
+                android:onClick="resetChronometer" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
     <ImageView
         android:layout_width="0dp"
@@ -45,58 +99,7 @@
 
     </ImageView>
 
-    <RelativeLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
 
-
-        <!-- Timer -->
-
-        <LinearLayout
-            android:id="@+id/timer_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_margin="5dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:layout_width="41dp"
-                android:layout_height="39dp"
-                android:background="@drawable/ic_pause_button"
-                android:onClick="pauseChronometer" />
-
-            <Chronometer
-                android:id="@+id/chronometer"
-                android:layout_width="89dp"
-                android:layout_height="71dp"
-                android:background="@drawable/ic_clock_without_up"
-                android:fontFamily="@font/font2"
-                android:padding="15dp"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_stop_button"
-                android:onClick="resetChronometer" />
-
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

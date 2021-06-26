@@ -1,6 +1,6 @@
 package il.org.puzzeling;
 
-import android.util.DisplayMetrics;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +43,8 @@ public class TouchListener implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 lParams.leftMargin =  (int) (x - deltaX);
                 lParams.topMargin = (int) (y - deltaY);
+                lParams.rightMargin = 0;
+                lParams.bottomMargin = 0;
                 v.setLayoutParams(lParams);
                 break;
 
