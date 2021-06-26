@@ -13,7 +13,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -77,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getApplicationContext(), PuzzleActivity.class);
+//                    Intent intent = new Intent(getApplicationContext(), PuzzleActivity.class);
                     mCurrentPhoto = files[i % files.length];
-                    intent.putExtra("assetName", mCurrentPhoto);
-                    showAlertDialog();
+//                    intent.putExtra("assetName", mCurrentPhoto);
+                    showLevelDialog(mCurrentPhoto,"mCurrentPhoto");
 
                 }
             });
@@ -95,77 +97,78 @@ public class MainActivity extends AppCompatActivity {
 
 
     //choosing level
-    public void showAlertDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-        alertDialog.setTitle(R.string.level_hint);
-        Resources res = getResources();
-        items = res.getStringArray(R.array.levels);
-        int checkedItem = 0;// first item in items array
-        alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        choice = 4;
-                        Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
-
-                        break;
-                    case 1:
-                        choice = 5;
-                        Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        choice = 6;
-                        Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        choice = 7;
-                        Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-        alertDialog.setPositiveButton(R.string.select_btn, new DialogInterface.OnClickListener() {
-            @Override
-
-            public void onClick(DialogInterface dialog, int which) {
-
-                Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
-
-
-                if (REQUEST_IMAGE_GALLERY == 4) {
-                    intent.putExtra("level", choice);
-                    intent.putExtra("assetName", mCurrentPhoto);
-                }
-
-                if (REQUEST_IMAGE_CAPTURE == 1) {
-                    intent.putExtra("level", choice);
-                    intent.putExtra("assetName", mCurrentPhoto);
-                }
-
-                startActivity(intent);
-
-
-            }
-        });
-        alertDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //back to same activity
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                finishAffinity();
-                startActivity(intent);
-
-            }
-        });
-        AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
-        alert.show();
-    }
+//    public void showAlertDialog() {
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+//        alertDialog.setTitle(R.string.level_hint);
+//        Resources res = getResources();
+//        items = res.getStringArray(R.array.levels);
+//        int checkedItem = 0;// first item in items array
+//        alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                switch (which) {
+//                    case 0:
+//                        choice = 4;
+//                        Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
+//
+//                        break;
+//                    case 1:
+//                        choice = 5;
+//                        Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case 2:
+//                        choice = 6;
+//                        Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case 3:
+//                        choice = 7;
+//                        Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        });
+//        alertDialog.setPositiveButton(R.string.select_btn, new DialogInterface.OnClickListener() {
+//            @Override
+//
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//                Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
+//
+//
+//                if (REQUEST_IMAGE_GALLERY == 4) {
+//                    intent.putExtra("level", choice);
+//                    intent.putExtra("assetName", mCurrentPhoto);
+//                }
+//
+//                if (REQUEST_IMAGE_CAPTURE == 1) {
+//                    intent.putExtra("level", choice);
+//                    intent.putExtra("assetName", mCurrentPhoto);
+//                }
+//
+//                startActivity(intent);
+//
+//
+//            }
+//        });
+//        alertDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                //back to same activity
+////                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+////                finishAffinity();
+////                startActivity(intent);
+//
+//                dialog.cancel();
+//
+//            }
+//        });
+//        AlertDialog alert = alertDialog.create();
+//        alert.setCanceledOnTouchOutside(false);
+//        alert.show();
+//    }
 
     //choosing picture from camera
     public void onImageFromCameraClick(View view) {
-        showAlertDialog();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -177,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (photoFile != null) {
-
                 Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
@@ -213,11 +215,8 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     onImageFromCameraClick(new View(this));
-
                 }
-
                 return;
             }
         }
@@ -229,19 +228,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-            Intent intent = new Intent(this, PuzzleActivity.class);
-            intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
-            intent.putExtra("level", choice);
-            startActivity(intent);
+            showLevelDialog(mCurrentPhotoPath,"mCurrentPhotoPath");
+//            Intent intent = new Intent(this, PuzzleActivity.class);
+//            intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
+//            intent.putExtra("level", choice);
+//            startActivity(intent);
 
         }
 
         if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
-            Intent intent = new Intent(this, PuzzleActivity.class);
-            intent.putExtra("mCurrentPhotoUri", uri.toString());
-            intent.putExtra("level", choice);
-            startActivity(intent);
+            showLevelDialog(uri.toString(),"mCurrentPhotoUri");
+//            Intent intent = new Intent(this, PuzzleActivity.class);
+//            intent.putExtra("mCurrentPhotoUri", uri.toString());
+//            intent.putExtra("level", choice);
+//            startActivity(intent);
 
         }
     }
@@ -276,8 +277,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         manageMusic(false);
+        super.onBackPressed();
     }
 
     public void manageMusic(boolean forceShutdown) {
@@ -326,6 +327,58 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return true;
+    }
+
+    public void showLevelDialog(String photoForPuzzle,String kind){
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View levelDialogView = factory.inflate(R.layout.level_dialog, null);
+        final AlertDialog levelDialog = new AlertDialog.Builder(this).create();
+        levelDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        levelDialog.setView(levelDialogView);
+        levelDialogView.findViewById(R.id.cancel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                levelDialog.dismiss();
+            }
+        });
+
+        RadioGroup levelRg = (RadioGroup) levelDialogView.findViewById(R.id.level_rg);
+        levelRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch(i){
+                    case R.id.easy_rb:
+                        choice = 4;
+                        Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.medium_rb:
+                        choice = 5;
+                        Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.hard_rb:
+                        choice = 6;
+                        Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.very_hard_rb:
+                        choice = 7;
+                        Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+
+
+        levelDialogView.findViewById(R.id.select_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                levelDialog.dismiss();
+                Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
+                intent.putExtra("level", choice);
+                intent.putExtra(kind, photoForPuzzle);
+                startActivity(intent);
+            }
+        });
+        levelDialog.show();
     }
 
 }
