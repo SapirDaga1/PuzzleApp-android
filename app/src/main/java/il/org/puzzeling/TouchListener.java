@@ -1,6 +1,7 @@
 package il.org.puzzeling;
 
 
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,11 @@ public class TouchListener implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getRawX();
         float y = event.getRawY();
+
+        DisplayMetrics displayMetrics= activity.getResources().getDisplayMetrics();
+        int screenHeight =displayMetrics.heightPixels;
+        int screenWidth= displayMetrics.widthPixels;
+
         final double tolerance = sqrt(pow(v.getWidth(), 2) + pow(v.getHeight(), 2)) / 10;
 
         PuzzlePieces piece = (PuzzlePieces) v;
@@ -42,11 +48,10 @@ public class TouchListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-
-                lParams.leftMargin =  (int) (x - deltaX);
-                lParams.topMargin = (int) (y - deltaY);
-                lParams.rightMargin = 0;
-                lParams.bottomMargin = 0;
+                lParams.leftMargin =  Math.min(Math.max(0, (int)(x - deltaX)), screenWidth - v.getWidth());
+                lParams.topMargin = Math.min(Math.max(0, (int)(y - deltaY)), screenHeight - v.getHeight() - 210);
+//                lParams.rightMargin = 0;
+                lParams.bottomMargin = screenHeight;
                 v.setLayoutParams(lParams);
                 break;
 
