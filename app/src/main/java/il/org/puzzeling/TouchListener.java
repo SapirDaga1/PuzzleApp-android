@@ -16,6 +16,7 @@ public class TouchListener implements View.OnTouchListener {
     private  float deltaY;
     private PuzzleActivity activity;
 
+
     public TouchListener(PuzzleActivity activity) {
         this.activity = activity;
     }
@@ -41,6 +42,7 @@ public class TouchListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
+
                 lParams.leftMargin =  (int) (x - deltaX);
                 lParams.topMargin = (int) (y - deltaY);
                 lParams.rightMargin = 0;

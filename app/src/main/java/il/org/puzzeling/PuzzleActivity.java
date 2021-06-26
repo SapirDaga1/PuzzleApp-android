@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,13 +39,13 @@ import android.net.Uri;
 import android.media.ExifInterface;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import java.util.ArrayList;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
 import static java.lang.Math.abs;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class PuzzleActivity extends AppCompatActivity {
 
     ArrayList<PuzzlePieces> pieces;
@@ -62,7 +61,7 @@ public class PuzzleActivity extends AppCompatActivity {
     //------Timer----------//
     private Chronometer chronometer;
 
-    long timeWhenStopped = 0;
+    private long pauseOffset;
     private boolean running;
 
     LottieAnimationView lottieAnimationView;
@@ -76,12 +75,12 @@ public class PuzzleActivity extends AppCompatActivity {
 
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
-
 
 
         sp = getSharedPreferences("music",MODE_PRIVATE);
@@ -152,10 +151,9 @@ public class PuzzleActivity extends AppCompatActivity {
     }
 
 
-
     public void startChronometer(View v) {
         if (!running) {
-            chronometer.setBase(SystemClock.elapsedRealtime() +timeWhenStopped);
+            chronometer.setBase(SystemClock.elapsedRealtime() -pauseOffset);
             chronometer.start();
             running = true;
         }
@@ -163,8 +161,9 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public void pauseChronometer(View v) {
         if (running) {
-            timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
             chronometer.stop();
+            pauseOffset =  SystemClock.elapsedRealtime()-chronometer.getBase();
+
             running = false;
             openPauseDialog();
 
@@ -173,7 +172,7 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
-        timeWhenStopped = 0;
+        pauseOffset = 0;
        //reset the activity
         finishAffinity();
         startActivity(getIntent());
@@ -479,7 +478,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
                 //resume the game
                 pause_dialog.cancel();
-                timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
+               //pauseOffset = chronometer.getBase() - SystemClock.elapsedRealtime();
                 startChronometer(v);
             }
         });
@@ -509,8 +508,11 @@ public class PuzzleActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        openPauseDialog();
+        pauseChronometer(this.chronometer);
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("music", isMuted).commit();
+
         manageMusic(true);
     }
 
