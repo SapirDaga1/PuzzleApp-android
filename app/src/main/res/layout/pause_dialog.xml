@@ -1,44 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_gravity="center"
-    android:id="@+id/pause_layout">
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="372dp"
-        android:orientation="vertical">
+    <LinearLayout android:gravity="center"
+    android:background="@drawable/dialog_backround" android:layout_gravity="center" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/pause_layout" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/winner_anim"
-            android:layout_width="370dp"
-            android:layout_height="250dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/wait_to_continue_anim" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/resume_hint"
-            android:id="@+id/resume_tv"
-            android:layout_gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/font3"
-            ></TextView>
-        <Button
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_play_button"
-            android:id="@+id/play_btn"
-            android:layout_gravity="center_horizontal"
-            android:onClick="startChronometer"
-            />
+    -<LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:padding="10dp" android:orientation="vertical">
 
-    </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView android:layout_height="250dp" android:layout_width="300dp" android:id="@+id/winner_anim" app:lottie_rawRes="@raw/wait_to_continue_anim" app:lottie_loop="true" app:lottie_autoPlay="true"/>
+
+    <TextView android:gravity="center" android:layout_gravity="center" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/resume_tv" android:textSize="20sp" android:textColor="@color/black" android:text="@string/resume_hint" android:fontFamily="@font/font3"/>
+
+    <Button android:background="@drawable/ic_play_button" android:layout_gravity="center_horizontal" android:layout_height="65dp" android:layout_width="65dp" android:id="@+id/play_btn" android:onClick="startChronometer" android:layout_marginVertical="10dp"/>
+
+</LinearLayout>
 
 </LinearLayout>
