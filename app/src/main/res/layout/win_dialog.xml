@@ -63,7 +63,7 @@
 
     <Button
         android:background="@drawable/ic_score_button"
-        android:layout_height="60dp" 
+        android:layout_height="60dp"
         android:layout_width="60dp"
         android:id="@+id/buttonRecords"/>
 
