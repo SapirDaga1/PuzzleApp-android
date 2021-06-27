@@ -451,7 +451,9 @@ public class PuzzleActivity extends AppCompatActivity {
     public void openWinDialog(){
         win_dialog.setContentView(R.layout.win_dialog);
         win_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        Button buttonOk=win_dialog.findViewById(R.id.buttonOk);
+       // EditText scoreET=win_dialog.findViewById(R.id.score_et);
+        TextView scoreView=win_dialog.findViewById(R.id.scoreView);
+        scoreView.getText();
         Button recordBtn=win_dialog.findViewById(R.id.recordsBtn);
         Button homeBtn=win_dialog.findViewById(R.id.buttonBackHome);
         win_dialog.show();
@@ -593,6 +595,7 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public static void syncScore(){
         score_et.setText(score + "");
+
     }
 }
 

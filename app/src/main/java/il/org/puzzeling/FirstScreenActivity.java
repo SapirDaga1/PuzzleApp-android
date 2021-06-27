@@ -26,13 +26,14 @@ import java.util.Set;
 public class
         FirstScreenActivity extends AppCompatActivity {
     Button playBtn;
-    Button aboutBtn;
     Button recordsBtn;
+
     ImageView playShine;
     ImageView aboutShine;
     ImageView recordsShine;
-    static boolean isMuted =false;
+
     SharedPreferences sp;
+    static boolean isMuted =false;
 
 
     @Override
@@ -41,16 +42,16 @@ public class
         setContentView(R.layout.activity_firstscreen);
 
         playBtn=findViewById(R.id.play_btn);
-        aboutBtn=findViewById(R.id.about_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
+
         playShine = findViewById(R.id.shine_play);
         aboutShine = findViewById(R.id.shine_about);
         recordsShine = findViewById(R.id.shine_record);
         shineAnimation(playBtn,playShine);
-        shineAnimation(aboutBtn,aboutShine);
         shineAnimation(recordsBtn,recordsShine);
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
+
         //moving to puzzleActivity
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +72,6 @@ public class
             }
         });
 
-        //open information about the game
-        aboutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aboutBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
-            }
-        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

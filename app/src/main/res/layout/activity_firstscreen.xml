@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="120dp">
         <Button
             android:id="@+id/play_btn"
             android:layout_width="140dp"
@@ -43,13 +43,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
         <Button
-            android:id="@+id/about_btn"
+            android:id="@+id/recordsBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_red_puzzle_button"
+            android:background="@drawable/ic_green_puzzle_btn"
             android:fontFamily="@font/font3"
-            android:text="@string/about_btn"
+            android:text="@string/records_btn"
             android:textColor="@color/black"
             android:textSize="20sp" />
         <ImageView
@@ -70,17 +70,7 @@
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
-        <Button
-            android:id="@+id/recordsBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_green_puzzle_btn"
-            android:fontFamily="@font/font3"
-            android:text="@string/records_btn"
-            android:textColor="@color/black"
 
-            android:textSize="20sp" />
             <ImageView
                 android:id="@+id/shine_record"
                 android:layout_width="50dp"

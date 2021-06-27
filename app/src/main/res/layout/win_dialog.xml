@@ -26,18 +26,29 @@
         app:lottie_loop="true"
         app:lottie_autoPlay="true"/>
 
-    <EditText
-        android:padding="10dp"
-        android:background="@drawable/radio_btn_unselected"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/name_ET"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:hint="@string/name_hint"
-        android:fontFamily="@font/font1"
-        android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/name_ET"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/radio_btn_unselected"
+            android:fontFamily="@font/font1"
+            android:hint="@string/name_hint"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center" 
+            android:background="@drawable/select_btn"
+            android:fontFamily="@font/font1"
+            android:id="@+id/select_btn"
+            android:text="@string/ok_hint"
+            android:textColor="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
 
     -<LinearLayout
@@ -54,11 +65,13 @@
         android:id="@+id/buttonBackHome"
         android:layout_marginEnd="20dp"/>
 
-    <Button
-        android:background="@drawable/ic_play_button"
-        android:layout_height="60dp"
-        android:layout_width="60dp"
-        android:id="@+id/buttonOk"
+    <TextView
+        android:background="@drawable/radio_btn_selected"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:id="@+id/scoreView"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         android:layout_marginEnd="20dp"/>
 
     <Button
