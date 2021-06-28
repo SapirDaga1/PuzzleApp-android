@@ -44,11 +44,12 @@ public class
         playBtn=findViewById(R.id.play_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
 
-        playShine = findViewById(R.id.shine_play);
+      /*  playShine = findViewById(R.id.shine_play);
         aboutShine = findViewById(R.id.shine_about);
-        recordsShine = findViewById(R.id.shine_record);
+        //recordsShine = findViewById(R.id.shine_record);
         shineAnimation(playBtn,playShine);
-        shineAnimation(recordsBtn,recordsShine);
+        shineAnimation(recordsBtn,recordsShine);*/
+
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
 
@@ -68,7 +69,7 @@ public class
         recordsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recordsBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
+               // recordsBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
             }
         });
 
@@ -142,7 +143,7 @@ public class
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
-    private void shineAnimation(Button btn, ImageView shine) {
+  /*  private void shineAnimation(Button btn, ImageView shine) {
 
         Animation animation = new TranslateAnimation(0, btn.getWidth()+shine.getWidth(),0, 0);
         animation.setDuration(1500);
@@ -150,6 +151,6 @@ public class
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
         shine.startAnimation(animation);
 
-}
+}*/
 
 }

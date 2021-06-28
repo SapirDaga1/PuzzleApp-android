@@ -15,6 +15,7 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        score=0;
+
         sp = getSharedPreferences("music", MODE_PRIVATE);
         manageMusic(false);
 
@@ -93,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
     }
-
 
     //choosing level
     public void showAlertDialog() {
@@ -351,19 +353,19 @@ public class MainActivity extends AppCompatActivity {
                 switch(i){
                     case R.id.easy_rb:
                         choice = 4;
-                        Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.easy_selected, Gravity.BOTTOM,0,30);
                         break;
                     case R.id.medium_rb:
                         choice = 5;
-                        Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.medium_selected, Gravity.BOTTOM,0,30);
                         break;
                     case R.id.hard_rb:
                         choice = 6;
-                        Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.hard_selected, Gravity.BOTTOM,0,30);
                         break;
                     case R.id.very_hard_rb:
                         choice = 7;
-                        Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.super_hard_selected, Gravity.BOTTOM,0,30);
                         break;
                 }
             }
@@ -381,6 +383,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         levelDialog.show();
+    }
+
+    public void showToast(int resId,int gravity, int xOffset, int yOffset){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,findViewById(R.id.toast_layout));
+        TextView toast_text = layout.findViewById(R.id.toast_tv);
+        toast_text.setText(resId);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(gravity,xOffset,yOffset);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
 }

@@ -23,4 +23,6 @@
     <string name="clue">בחרת בשימוש ברמז השתמשת ב</string>
     <string name="points">" נקודות"</string>
     <string name="home_page">דף הבית</string>
+    <string name="hint_puzzle_text">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 50 נקודות.</string>
+    <string name="hint_error">כדי להשתמש ברמז צריכות להיות לפחות 50 נקודות</string>
 </resources>

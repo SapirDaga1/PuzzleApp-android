@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Puzzeling</string>
     <string name="about_btn">ABOUT</string>
-    <string name="records_btn">" RECORDS"</string>
+    <string name="records_btn">RECORDS</string>
     <string name="play_btn">PLAY</string>
     <string name="level_hint">SELECT LEVEL</string>
 
@@ -28,8 +28,10 @@
     <string name="ok_hint">OK</string>
     <string name="resume_hint">Press on \"PLAY\" to resume</string>
     <string name="homepage">Already in home page</string>
-    <string name="clue">"You've Chosen to pick clue, used  "</string>
+    <string name="clue">"You've chosen to pick clue, used  "</string>
     <string name="points">" points"</string>
     <string name="home_page">Home Page</string>
+    <string name="hint_puzzle_text">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 50 points</string>
+    <string name="hint_error">To use hint you must have at least 50 points.</string>
 </resources>
 

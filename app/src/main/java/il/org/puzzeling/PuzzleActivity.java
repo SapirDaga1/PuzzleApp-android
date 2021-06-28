@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,13 +30,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
-import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.Random;
 import java.io.InputStream;
@@ -43,9 +42,7 @@ import android.net.Uri;
 import android.media.ExifInterface;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.airbnb.lottie.LottieAnimationView;
 import java.util.ArrayList;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
 import static il.org.puzzeling.MainActivity.FLAG_LEVEL;
@@ -54,7 +51,6 @@ import static il.org.puzzeling.MainActivity.score;
 import static java.lang.Math.abs;
 
 public class PuzzleActivity extends AppCompatActivity {
-
 
     ArrayList<PuzzlePieces> pieces;
     ImageView mImageView;
@@ -66,23 +62,22 @@ public class PuzzleActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static EditText score_et;
     boolean once = true;
-    Chronometer simpleChronometer; //stopper
 
-
+    private MenuItem clue_Btn;
     //------Timer----------//
     private Chronometer chronometer;
     private long pauseOffset;
     private boolean running ;
 
-    LottieAnimationView lottieAnimationView;
 
-    //---Dialog finish game----//
+    //---Dialogs----//
     Dialog win_dialog;
     Dialog pause_dialog;
+    Dialog clue_dialog;
 
     //  boolean timerStarted = true;
     public int num; //num of pieces
-
+    private int hintChosen;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -108,16 +103,15 @@ public class PuzzleActivity extends AppCompatActivity {
         //--------finish game dialog--------//0
         win_dialog = new Dialog(this);
         pause_dialog= new Dialog(this);
+        clue_dialog =new Dialog(this);
+
 
         Intent intent = getIntent();
-        //lottieAnimationView = findViewById(R.id.countdown_anim);
-        // lottieAnimationView.setVisibility(View.VISIBLE);
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
         mCurrentPhoto = intent.getStringExtra("mCurrentPhoto");
         num = intent.getIntExtra("level", 4);
-
 
 
         // run image related code after the view was laid out
@@ -156,31 +150,6 @@ public class PuzzleActivity extends AppCompatActivity {
 
     }
 
-
-
-    public void startChronometer() {
-        if (!running) {
-            chronometer.setBase(SystemClock.elapsedRealtime() -pauseOffset);
-            chronometer.start();
-            running = true;
-        }
-
-    }
-    public void pauseChronometer(View v) {
-        if (running) {
-            chronometer.stop();
-            pauseOffset =  SystemClock.elapsedRealtime()-chronometer.getBase();
-            running = false;
-            openPauseDialog();
-        }
-    }
-    public void resetChronometer(View v) {
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffset = 0;
-        //reset the activity
-        finish();
-        startActivity(getIntent());
-    }
 
 
 
@@ -448,16 +417,44 @@ public class PuzzleActivity extends AppCompatActivity {
                 matrix, true);
     }
 
+
+//----------Chronometer------------//
+
+    public void startChronometer() {
+        if (!running) {
+            chronometer.setBase(SystemClock.elapsedRealtime() -pauseOffset);
+            chronometer.start();
+            running = true;
+        }
+
+    }
+    public void pauseChronometer(View v) {
+        if (running) {
+            chronometer.stop();
+            pauseOffset =  SystemClock.elapsedRealtime()-chronometer.getBase();
+            running = false;
+            openPauseDialog();
+        }
+    }
+    public void resetChronometer(View v) {
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
+        //reset the activity
+        finish();
+        startActivity(getIntent());
+    }
+
+    //----------Dialogs------------//
+
     public void openWinDialog(){
         win_dialog.setContentView(R.layout.win_dialog);
         win_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-       // EditText scoreET=win_dialog.findViewById(R.id.score_et);
         TextView scoreView=win_dialog.findViewById(R.id.scoreView);
-        scoreView.getText();
+        scoreView.setText(""+score);
         Button recordBtn=win_dialog.findViewById(R.id.recordsBtn);
         Button homeBtn=win_dialog.findViewById(R.id.buttonBackHome);
         win_dialog.show();
-        win_dialog.setCancelable(true);
+        win_dialog.setCancelable(false);
 
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -487,6 +484,49 @@ public class PuzzleActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void openClueDialog() {
+        chronometer.stop();
+        pauseOffset =  SystemClock.elapsedRealtime()-chronometer.getBase();
+        running=false;
+
+        clue_dialog.setContentView(R.layout.hint_dialog);
+        clue_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView hintText= clue_dialog.findViewById(R.id.hintText);
+        Button confirmBtn= clue_dialog.findViewById(R.id.select_btn);
+        Button cancleBtn= clue_dialog.findViewById(R.id.cancel_btn);
+
+        clue_dialog.show();
+        clue_dialog.setCancelable(false);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imageView = findViewById(R.id.imageView);
+                imageView.setVisibility(View.VISIBLE);
+                Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points * 5 * FLAG_LEVEL + getString(R.string.points), Toast.LENGTH_SHORT).show();
+                score = score - points * 5 * FLAG_LEVEL;
+                once=false;
+                //hintChosen++;
+                clue_Btn.setIcon(R.drawable.ic_no_hint_bulb_button);
+                clue_Btn.setEnabled(false);
+                syncScore();
+                clue_dialog.cancel();
+                chronometer.setBase(SystemClock.elapsedRealtime() -pauseOffset);
+                chronometer.start();
+                running = true;
+            }
+        });
+        cancleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                once=true;
+                clue_dialog.cancel();
+                startChronometer();
+            }
+        });
+    }
+
 
 
     public void checkGameOver() {
@@ -537,6 +577,7 @@ public class PuzzleActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_puzzle, menu);
+        clue_Btn=menu.findItem(R.id.clue);
         return true;
     }
 
@@ -551,21 +592,14 @@ public class PuzzleActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.clue:
-                Clue = true;
-                ImageView imageView = findViewById(R.id.imageView);
-                if(Clue && once) {
-                    imageView.setVisibility(View.VISIBLE);
-                    Toast.makeText(PuzzleActivity.this, getString(R.string.clue) + points*5*FLAG_LEVEL + getString(R.string.points), Toast.LENGTH_SHORT).show();
-                    score = score - points*5*FLAG_LEVEL;
-                    item.setIcon(R.drawable.ic_no_hint_bulb_button);
-                    syncScore();
-                    once=false;
+                if(score>=50) {
+                    openClueDialog();
                 }
-                else {
-                }
-
+                else
+                    Toast.makeText(this,R.string.hint_error,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.sound_icon:
                 isMuted = !isMuted;
@@ -587,15 +621,25 @@ public class PuzzleActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
 
-
-
-
         }
         return true;
     }
+
     public static void syncScore(){
         score_et.setText(score + "");
 
+    }
+
+    public void showToast(int resId,int gravity, int xOffset, int yOffset){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,findViewById(R.id.toast_layout));
+        TextView toast_text = layout.findViewById(R.id.toast_tv);
+        toast_text.setText(resId);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(gravity,xOffset,yOffset);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }
 

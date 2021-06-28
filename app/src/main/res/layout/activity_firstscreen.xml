@@ -23,10 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/ic_yellow_puzzle_button"
-            android:fontFamily="@font/font3"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
             android:text="@string/play_btn"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
         <ImageView
             android:id="@+id/shine_play"
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
             />
     </RelativeLayout>
     <!-- End Play button -->
-    <!-- About Button-->
+    <!--Records Button-->
     <RelativeLayout
         android:id="@+id/about_combine"
         android:layout_width="140dp"
@@ -43,15 +44,17 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
         <Button
+
             android:id="@+id/recordsBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_green_puzzle_btn"
-            android:fontFamily="@font/font3"
+            android:background="@drawable/ic_red_puzzle_button"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
             android:text="@string/records_btn"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
         <ImageView
             android:id="@+id/shine_about"
             android:layout_width="50dp"
@@ -62,25 +65,7 @@
 </RelativeLayout>
 
 
-        <!--About button End-->
-        <!--Records Button-->
-        <RelativeLayout
-            android:id="@+id/records_combine"
-            android:layout_below="@+id/about_combine"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
 
-            <ImageView
-                android:id="@+id/shine_record"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="-50dp"
-                android:src="@drawable/shine_effect"
-                />
-
-
-        </RelativeLayout>
         <!--Records Button End-->
 
 
