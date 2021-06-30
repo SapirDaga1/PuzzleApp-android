@@ -17,6 +17,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,9 +57,10 @@ public class PuzzleActivity extends AppCompatActivity {
 
 
     ArrayList<PuzzlePieces> pieces;
+    ImageView mImageView;
     String mCurrentPhotoPath;
     String mCurrentPhotoUri;
-    String  mCurrentPhoto;
+    String mCurrentPhoto;
     SharedPreferences sp;
     static  boolean Clue = false;
     @SuppressLint("StaticFieldLeak")
@@ -69,9 +71,8 @@ public class PuzzleActivity extends AppCompatActivity {
 
     //------Timer----------//
     private Chronometer chronometer;
-
-    long timeWhenStopped = 0;
-    private boolean running;
+    private long pauseOffset;
+    private boolean running ;
 
     LottieAnimationView lottieAnimationView;
 
@@ -92,9 +93,11 @@ public class PuzzleActivity extends AppCompatActivity {
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
         final RelativeLayout layout = findViewById(R.id.layout);
+
         final ImageView imageView = findViewById(R.id.imageView);
         score_et= findViewById(R.id.score_et);
         imageView.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+
 
         //------Timer------//
         chronometer = findViewById(R.id.chronometer);
@@ -105,10 +108,8 @@ public class PuzzleActivity extends AppCompatActivity {
         pause_dialog= new Dialog(this);
 
         Intent intent = getIntent();
-        final String assetName = intent.getStringExtra("assetName");
-
         //lottieAnimationView = findViewById(R.id.countdown_anim);
-       // lottieAnimationView.setVisibility(View.VISIBLE);
+        // lottieAnimationView.setVisibility(View.VISIBLE);
 
         mCurrentPhotoPath = intent.getStringExtra("mCurrentPhotoPath");
         mCurrentPhotoUri = intent.getStringExtra("mCurrentPhotoUri");
@@ -119,16 +120,16 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // run image related code after the view was laid out
         // to have all dimensions calculated
-        imageView.post(new Runnable() {
+        mImageView.post(new Runnable() {
             @Override
             public void run() {
 
-                if (assetName != null) {
-                    setPicFromAsset(assetName, imageView);
+                if (mCurrentPhoto != null) {
+                    setPicFromAsset(mCurrentPhoto, mImageView);
                 } else if (mCurrentPhotoPath != null) {
-                    setPicFromPath(mCurrentPhotoPath, imageView);
+                    setPicFromPath(mCurrentPhotoPath, mImageView);
                 } else if (mCurrentPhotoUri != null) {
-                    imageView.setImageURI(Uri.parse(mCurrentPhotoUri));
+                    mImageView.setImageURI(Uri.parse(mCurrentPhotoUri));
                 }
                 pieces = splitImage();
                 TouchListener touchListener = new TouchListener(PuzzleActivity.this);
@@ -144,7 +145,7 @@ public class PuzzleActivity extends AppCompatActivity {
                     lParams.topMargin = layout.getHeight() - piece.pieceHeight;
                     piece.setLayoutParams(lParams);
                     if(piece.canMove)
-                        startChronometer((View)piece );
+                        startChronometer();
                     checkGameOver();
                 }
             }
@@ -155,9 +156,9 @@ public class PuzzleActivity extends AppCompatActivity {
 
 
 
-    public void startChronometer(View v) {
+    public void startChronometer() {
         if (!running) {
-            chronometer.setBase(SystemClock.elapsedRealtime() +timeWhenStopped);
+            chronometer.setBase(SystemClock.elapsedRealtime() -pauseOffset);
             chronometer.start();
             running = true;
         }
@@ -165,17 +166,17 @@ public class PuzzleActivity extends AppCompatActivity {
     }
     public void pauseChronometer(View v) {
         if (running) {
-            timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
             chronometer.stop();
+            pauseOffset =  SystemClock.elapsedRealtime()-chronometer.getBase();
             running = false;
             openPauseDialog();
         }
     }
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
-        timeWhenStopped = 0;
-       //reset the activity
-        finishAffinity();
+        pauseOffset = 0;
+        //reset the activity
+        finish();
         startActivity(getIntent());
     }
 
@@ -447,7 +448,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void openWinDialog(){
         win_dialog.setContentView(R.layout.win_dialog);
-        EditText editText=win_dialog.findViewById(R.id.name_ET);
+        win_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         Button buttonOk=win_dialog.findViewById(R.id.buttonOk);
         Button recordBtn=win_dialog.findViewById(R.id.recordsBtn);
         Button homeBtn=win_dialog.findViewById(R.id.buttonBackHome);
@@ -468,7 +469,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public void openPauseDialog(){
         pause_dialog.setContentView(R.layout.pause_dialog);
-        TextView textToResume=pause_dialog.findViewById(R.id.resume_tv);
+        pause_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         Button resume=pause_dialog.findViewById(R.id.play_btn);
         pause_dialog.show();
         pause_dialog.setCancelable(false);
@@ -476,15 +477,12 @@ public class PuzzleActivity extends AppCompatActivity {
         resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //resume the game
                 pause_dialog.cancel();
-                timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
-                startChronometer(v);
+                startChronometer();
             }
         });
     }
-
 
 
     public void checkGameOver() {
@@ -496,7 +494,6 @@ public class PuzzleActivity extends AppCompatActivity {
     private boolean isGameOver() {
         for (PuzzlePieces piece : pieces) {
             if (piece.canMove) {
-
                 return false;
             }
         }
@@ -522,8 +519,8 @@ public class PuzzleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
         manageMusic(false);
+        super.onBackPressed();
     }
 
     public void manageMusic(boolean forceShutdown) {

@@ -1,57 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/aaaaa"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
-   android:scrollbarStyle="outsideInset">
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <GridView
-        android:id="@+id/grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="22dp"
-        android:horizontalSpacing="10dp"
-        android:numColumns="2"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp"
-        android:verticalSpacing="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:scrollbarStyle="outsideInset" android:scrollbarAlwaysDrawVerticalTrack="true" android:background="@drawable/aaaaa" tools:context=".MainActivity" android:layout_height="fill_parent" android:layout_width="fill_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <GridView android:layout_height="match_parent" android:layout_width="match_parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent" android:verticalSpacing="10dp" android:paddingVertical="10dp" android:paddingHorizontal="12dp" android:numColumns="2" android:horizontalSpacing="10dp" android:layout_marginTop="22dp" android:layout_marginStart="10dp" android:layout_marginEnd="10dp" android:layout_marginBottom="10dp" android:id="@+id/grid"/>
 
-    <Button
-        android:id="@+id/cameraButton"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/ic_camera_button"
-        android:clickable="true"
-        android:onClick="onImageFromCameraClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <Button android:background="@drawable/ic_camera_button" android:layout_height="60dp" android:layout_width="60dp" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="10dp" android:layout_marginBottom="10dp" android:id="@+id/cameraButton" android:onClick="onImageFromCameraClick" android:clickable="true"/>
 
-    <Button
-        android:id="@+id/galleryButton"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/ic_gallery_button"
-        android:clickable="true"
-        android:onClick="onImageFromGalleryClick"
-        android:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/cameraButton" />
+    <Button android:background="@drawable/ic_gallery_button" android:layout_height="60dp" android:layout_width="60dp" app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="10dp" android:layout_marginBottom="10dp" android:id="@+id/galleryButton" android:onClick="onImageFromGalleryClick" android:clickable="true" app:layout_constraintEnd_toStartOf="@id/cameraButton" android:tint="@android:color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

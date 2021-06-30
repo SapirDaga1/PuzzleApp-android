@@ -1,11 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/aaaaa"
     android:orientation="vertical"
-    tools:context=".PuzzleActivity">
+    tools:context=".PuzzleActivity"
+    android:id="@+id/constraitLay">
 
     <RelativeLayout
         android:id="@+id/layout"
@@ -17,30 +20,33 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
+
+
         <!-- Timer -->
+
         <LinearLayout
             android:id="@+id/timer_layout"
             android:layout_width="match_parent"
-            android:weightSum="10"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            >
-
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="39dp"
-                android:layout_weight="1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/ic_pause_button"
-                android:onClick="pauseChronometer" />
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="pauseChronometer"/>
 
             <Chronometer
                 android:id="@+id/chronometer"
-                android:layout_width="0dp"
-                android:layout_weight="4"
-                android:layout_height="71dp"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/ic_clock_without_up"
                 android:fontFamily="@font/font2"
                 android:padding="15dp"
@@ -49,25 +55,29 @@
                 android:textStyle="bold" />
 
             <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_stop_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_reset_button"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="resetChronometer" />
+
             <EditText
                 android:id="@+id/score_et"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="110dp"
+                android:layout_height="77dp"
                 android:layout_weight="4"
+                
                 android:enabled="false"
-                android:textAlignment="center"
-                android:textStyle="bold"
+                android:padding="30dp"
                 android:text="0"
-                />
-
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </RelativeLayout>
+
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -76,11 +86,12 @@
         android:layout_marginEnd="1dp"
         android:alpha="1.0"
         android:background="@drawable/frame_puzzle"
-        app:layout_constraintDimensionRatio="H,4:5"
-        app:layout_constraintEnd_toEndOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="@id/imageView"
+        app:layout_constraintDimensionRatio="H,5:5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/imageView" />
-
 
     <ImageView
         android:id="@+id/imageView"
@@ -93,18 +104,12 @@
         android:scaleType="centerCrop"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,4:5"
+        app:layout_constraintDimensionRatio="H,5:5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/timer_layout"
-        app:srcCompat="@drawable/aaaaa">
-
-
-    </ImageView>
-
-
-
-
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/aaaaa"></ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
