@@ -23,6 +23,10 @@
     <string name="clue">בחרת בשימוש ברמז השתמשת ב</string>
     <string name="points">" נקודות"</string>
     <string name="home_page">דף הבית</string>
-    <string name="hint_puzzle_text">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 50 נקודות.</string>
-    <string name="hint_error">כדי להשתמש ברמז צריכות להיות לפחות 50 נקודות</string>
+    <string name="hint_puzzle_text_easy">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 30 נקודות.</string>
+    <string name="hint_puzzle_text_medium">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 40 נקודות.</string>
+    <string name="hint_puzzle_text_hard">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 50 נקודות.</string>
+    <string name="hint_puzzle_text_superhard">האם את/ה בטוח/ה שברצונך להשתמש ברמז? ניתן להשתמש בו פעם אחת. שימוש ברמז יפחית 60 נקודות.</string>
+  <string name="hint_error">כדי להשתמש ברמז צריכות להיות לפחות 50 נקודות</string>
+    <string name="table_score_hint">טבלת שיאים</string>
 </resources>

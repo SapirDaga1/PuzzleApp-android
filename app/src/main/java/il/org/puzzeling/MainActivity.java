@@ -20,13 +20,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +33,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -86,11 +81,8 @@ public class MainActivity extends AppCompatActivity {
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                    Intent intent = new Intent(getApplicationContext(), PuzzleActivity.class);
                     mCurrentPhoto = files[i % files.length];
-//                    intent.putExtra("assetName", mCurrentPhoto);
                     showLevelDialog(mCurrentPhoto,"mCurrentPhoto");
-
                 }
             });
         } catch (IOException e) {
@@ -100,77 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //choosing level
-    public void showAlertDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-        alertDialog.setTitle(R.string.level_hint);
-        Resources res = getResources();
-        items = res.getStringArray(R.array.levels);
-        int checkedItem = 0;// first item in items array
-        alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        choice = 4;
-                        Toast.makeText(MainActivity.this, R.string.easy_selected, Toast.LENGTH_SHORT).show();
-                        FLAG_LEVEL=1;
-                        break;
-                    case 1:
-                        choice = 5;
-                        Toast.makeText(MainActivity.this, R.string.medium_selected, Toast.LENGTH_SHORT).show();
-                        FLAG_LEVEL=2;
-                        break;
-                    case 2:
-                        choice = 6;
-                        Toast.makeText(MainActivity.this, R.string.hard_selected, Toast.LENGTH_SHORT).show();
-                        FLAG_LEVEL=3;
-                        break;
-                    case 3:
-                        choice = 7;
-                        Toast.makeText(MainActivity.this, R.string.super_hard_selected, Toast.LENGTH_SHORT).show();
-                        FLAG_LEVEL=4;
-                        break;
-                }
-            }
-        });
-        alertDialog.setPositiveButton(R.string.select_btn, new DialogInterface.OnClickListener() {
-            @Override
-
-            public void onClick(DialogInterface dialog, int which) {
-
-                Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
-
-
-                if (REQUEST_IMAGE_GALLERY == 4) {
-                    intent.putExtra("level", choice);
-                    intent.putExtra("assetName", mCurrentPhoto);
-                }
-
-                if (REQUEST_IMAGE_CAPTURE == 1) {
-                    intent.putExtra("level", choice);
-                    intent.putExtra("assetName", mCurrentPhoto);
-                }
-
-                startActivity(intent);
-
-
-            }
-        });
-        alertDialog.setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //back to same activity
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                finishAffinity();
-                startActivity(intent);
-
-            }
-        });
-        AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
-        alert.show();
-    }
     //choosing picture from camera
     public void onImageFromCameraClick(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -233,21 +154,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             showLevelDialog(mCurrentPhotoPath,"mCurrentPhotoPath");
-//            Intent intent = new Intent(this, PuzzleActivity.class);
-//            intent.putExtra("mCurrentPhotoPath", mCurrentPhotoPath);
-//            intent.putExtra("level", choice);
-//            startActivity(intent);
-
         }
 
         if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
             showLevelDialog(uri.toString(),"mCurrentPhotoUri");
-//            Intent intent = new Intent(this, PuzzleActivity.class);
-//            intent.putExtra("mCurrentPhotoUri", uri.toString());
-//            intent.putExtra("level", choice);
-//            startActivity(intent);
-
         }
     }
 
@@ -354,18 +265,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.easy_rb:
                         choice = 4;
                         showToast(R.string.easy_selected, Gravity.BOTTOM,0,30);
+                        FLAG_LEVEL=1;
                         break;
                     case R.id.medium_rb:
                         choice = 5;
                         showToast(R.string.medium_selected, Gravity.BOTTOM,0,30);
+                        FLAG_LEVEL=2;
                         break;
                     case R.id.hard_rb:
                         choice = 6;
                         showToast(R.string.hard_selected, Gravity.BOTTOM,0,30);
+                        FLAG_LEVEL=3;
                         break;
                     case R.id.very_hard_rb:
                         choice = 7;
                         showToast(R.string.super_hard_selected, Gravity.BOTTOM,0,30);
+                        FLAG_LEVEL=4;
                         break;
                 }
             }

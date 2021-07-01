@@ -51,6 +51,7 @@ public class ImageAdapter extends BaseAdapter {
 
         final ImageView imageView = convertView.findViewById(R.id.gridImageview);
         imageView.setImageBitmap(null);
+
         // run image related code after the view was laid out
         imageView.post(new Runnable() {
             @Override

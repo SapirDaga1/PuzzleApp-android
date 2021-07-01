@@ -21,8 +21,13 @@
             android:id="@+id/hintText"
             android:fontFamily="@font/font5"
             android:textSize="24sp"
-            android:text="@string/hint_puzzle_text"
-            android:textColor="@color/white"/>
+            android:text="@string/hint_puzzle_text_easy"
+            android:textColor="@color/white"
+            />
+
+
+
+
 
 
     </RelativeLayout>

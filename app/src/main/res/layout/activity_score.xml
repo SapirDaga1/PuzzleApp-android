@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:background="@drawable/score_activity_background"
+    android:layout_gravity="center"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/activity_score_main"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textStyle="bold"
+        android:textSize="35sp"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:fontFamily="@font/font3"
+        android:text="@string/table_score_hint"
+        android:padding="5dp"
+        android:gravity="center"
+        android:layout_margin="10dp"/>
+
+    <ListView
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/listView"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>

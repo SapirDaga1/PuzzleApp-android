@@ -27,15 +27,10 @@
             android:gravity="center"
             android:text="@string/play_btn"
             android:textColor="@color/black"
-            android:textSize="23sp" />
-        <ImageView
-            android:id="@+id/shine_play"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shine_effect"
-            />
+            android:textSize="20sp" />
     </RelativeLayout>
     <!-- End Play button -->
+
     <!--Records Button-->
     <RelativeLayout
         android:id="@+id/about_combine"
@@ -54,14 +49,8 @@
             android:gravity="center"
             android:text="@string/records_btn"
             android:textColor="@color/black"
-            android:textSize="22sp" />
-        <ImageView
-            android:id="@+id/shine_about"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-50dp"
-            android:src="@drawable/shine_effect"
-            />
+            android:textSize="20sp" />
+
 </RelativeLayout>
 
 

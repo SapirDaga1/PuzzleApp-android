@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/resume_tv"
         android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="@string/resume_hint"
         android:fontFamily="@font/font1"/>
 

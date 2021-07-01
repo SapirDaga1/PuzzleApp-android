@@ -25,13 +25,17 @@
     <string name="hard_lvl">Hard</string>
     <string name="super_hard_lvl">Super hard</string>
     <string name="name_hint">Enter your name</string>
-    <string name="ok_hint">OK</string>
+    <string name="ok_hint">SEND</string>
     <string name="resume_hint">Press on \"PLAY\" to resume</string>
     <string name="homepage">Already in home page</string>
     <string name="clue">"You've chosen to pick clue, used  "</string>
     <string name="points">" points"</string>
     <string name="home_page">Home Page</string>
-    <string name="hint_puzzle_text">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 50 points</string>
-    <string name="hint_error">To use hint you must have at least 50 points.</string>
+    <string name="hint_puzzle_text_easy">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 30 points</string>
+    <string name="hint_puzzle_text_medium">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 40 points</string>
+    <string name="hint_puzzle_text_hard">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 50 points</string>
+    <string name="hint_puzzle_text_superhard">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 60 points</string>
+    <string name="hint_error">"You Don't Have Enough Points!\n Minimum of 50!"</string>
+    <string name="table_score_hint">Score Table</string>
 </resources>
 

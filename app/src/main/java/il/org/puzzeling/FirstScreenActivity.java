@@ -2,38 +2,28 @@ package il.org.puzzeling;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Map;
-import java.util.Set;
 
 public class
-        FirstScreenActivity extends AppCompatActivity {
+FirstScreenActivity extends AppCompatActivity {
     Button playBtn;
     Button recordsBtn;
 
-    ImageView playShine;
-    ImageView aboutShine;
-    ImageView recordsShine;
-
-    SharedPreferences sp;
     static boolean isMuted =false;
+    SharedPreferences sp;
 
 
     @Override
@@ -44,12 +34,6 @@ public class
         playBtn=findViewById(R.id.play_btn);
         recordsBtn=findViewById(R.id.recordsBtn);
 
-      /*  playShine = findViewById(R.id.shine_play);
-        aboutShine = findViewById(R.id.shine_about);
-        //recordsShine = findViewById(R.id.shine_record);
-        shineAnimation(playBtn,playShine);
-        shineAnimation(recordsBtn,recordsShine);*/
-
         sp = getSharedPreferences("music",MODE_PRIVATE);
         manageMusic(false);
 
@@ -57,19 +41,27 @@ public class
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pulse));
+
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(50);
+                scaleAnimation.setRepeatMode(Animation.REVERSE);
+                scaleAnimation.setRepeatCount(1);
+                playBtn.startAnimation(scaleAnimation);
                 Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
-                sp = getSharedPreferences("music",MODE_PRIVATE);
                 startActivity(intent);
 
             }
         });
-
-        //open table of records
         recordsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // recordsBtn.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_right));
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(50);
+                scaleAnimation.setRepeatMode(Animation.REVERSE);
+                scaleAnimation.setRepeatCount(1);
+                recordsBtn.startAnimation(scaleAnimation);
+                Intent intent= new Intent(FirstScreenActivity.this,ScoreActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -95,7 +87,6 @@ public class
         switch (item.getItemId()) {
             case R.id.sound_icon:
                 isMuted = !isMuted;
-
                 if (isMuted)
                 {
                     //Pause/Stop music
@@ -110,9 +101,7 @@ public class
                 }
                 break;
             case R.id.home_icon:
-                Toast.makeText(FirstScreenActivity.this, R.string.homepage, Toast.LENGTH_SHORT).show();
-
-
+                showToast(R.string.home_page, Gravity.BOTTOM,0,30);
         }
         return true;
     }
@@ -143,14 +132,18 @@ public class
         else
             MusicPlayer.start(this, MusicPlayer.MUSIC_MENU);
     }
-  /*  private void shineAnimation(Button btn, ImageView shine) {
 
-        Animation animation = new TranslateAnimation(0, btn.getWidth()+shine.getWidth(),0, 0);
-        animation.setDuration(1500);
-        animation.setFillAfter(true);
-        animation.setInterpolator(new AccelerateDecelerateInterpolator());
-        shine.startAnimation(animation);
-
-}*/
+    // Showing designed Toast
+    public void showToast(int resId,int gravity, int xOffset, int yOffset){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,findViewById(R.id.toast_layout));
+        TextView toast_text = layout.findViewById(R.id.toast_tv);
+        toast_text.setText(resId);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(gravity,xOffset,yOffset);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
 
 }
