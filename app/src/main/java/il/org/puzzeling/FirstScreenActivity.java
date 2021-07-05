@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 public class
 FirstScreenActivity extends AppCompatActivity {
     Button playBtn;
@@ -49,6 +51,7 @@ FirstScreenActivity extends AppCompatActivity {
                 playBtn.startAnimation(scaleAnimation);
                 Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
                 startActivity(intent);
+                Animatoo.animateZoom(FirstScreenActivity.this);
 
             }
         });
@@ -62,6 +65,7 @@ FirstScreenActivity extends AppCompatActivity {
                 recordsBtn.startAnimation(scaleAnimation);
                 Intent intent= new Intent(FirstScreenActivity.this,ScoreActivity.class);
                 startActivity(intent);
+                Animatoo.animateZoom(FirstScreenActivity.this);
             }
         });
 
@@ -124,6 +128,7 @@ FirstScreenActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         manageMusic(false);
+
     }
 
     public void manageMusic(boolean forceShutdown) {

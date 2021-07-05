@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
@@ -96,6 +98,7 @@ public class ScoreActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScoreActivity.this, FirstScreenActivity.class);
                 finishAffinity();
                 startActivity(intent);
+                Animatoo.animateSlideRight(ScoreActivity.this);
         }
         return true;
     }
@@ -118,5 +121,6 @@ public class ScoreActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         manageMusic(false);
+        Animatoo.animateZoom(ScoreActivity.this);
     }
 }

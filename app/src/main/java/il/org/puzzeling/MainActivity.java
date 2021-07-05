@@ -33,6 +33,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import androidx.annotation.NonNull;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,7 +45,6 @@ import static il.org.puzzeling.FirstScreenActivity.isMuted;
 public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
-    String mCurrentPhotoUri;
     SharedPreferences sp;
     static int FLAG_LEVEL=1;
     static int score;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
-    String[] items;
+   // String[] items;
     Dialog level_dialog;
     int choice = 4; //default choice is easy level
 
@@ -200,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         manageMusic(false);
         super.onBackPressed();
+        Animatoo.animateZoom(MainActivity.this);
     }
 
     public void manageMusic(boolean forceShutdown) {
@@ -243,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, FirstScreenActivity.class);
                 finishAffinity();
                 startActivity(intent);
+                Animatoo.animateSlideRight(MainActivity.this);
                 break;
         }
         return true;
@@ -299,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("level", choice);
                 intent.putExtra(kind, photoForPuzzle);
                 startActivity(intent);
+                Animatoo.animateSlideRight(MainActivity.this);
             }
         });
         levelDialog.show();

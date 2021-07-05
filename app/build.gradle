@@ -33,7 +33,8 @@ dependencies {
     //for lottie annimation
     implementation "com.airbnb.android:lottie:3.4.0"
 
-
+    //for Animatoo (between screens)
+    implementation 'com.github.mohammadatif:Animatoo:master'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
@@ -54,3 +55,4 @@ dependencies {
 
 
 }
+

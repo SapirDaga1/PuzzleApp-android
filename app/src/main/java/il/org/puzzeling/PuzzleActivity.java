@@ -43,6 +43,8 @@ import android.media.ExifInterface;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import static il.org.puzzeling.FirstScreenActivity.isMuted;
 import static il.org.puzzeling.MainActivity.FLAG_LEVEL;
@@ -452,6 +454,7 @@ public class PuzzleActivity extends AppCompatActivity {
         //reset the activity
         finish();
         startActivity(getIntent());
+        Animatoo.animateSlideRight(PuzzleActivity.this);
     }
 
     //----------Dialogs------------//
@@ -479,6 +482,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 Intent intent = new Intent(PuzzleActivity.this, FirstScreenActivity.class);
                 finishAffinity();
                 startActivity(intent);
+                Animatoo.animateSlideRight(PuzzleActivity.this);
             }
         });
 
@@ -503,6 +507,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 Intent scoreActivity = new Intent(PuzzleActivity.this, ScoreActivity.class);
                 finish();
                 startActivity(scoreActivity);
+                Animatoo.animateSlideRight(PuzzleActivity.this);
             }
         });
 
@@ -512,6 +517,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 Intent scoreActivity = new Intent(PuzzleActivity.this, ScoreActivity.class);
                 finish();
                 startActivity(scoreActivity);
+                Animatoo.animateSlideRight(PuzzleActivity.this);
             }
         });
 
@@ -645,6 +651,8 @@ public class PuzzleActivity extends AppCompatActivity {
     public void onBackPressed() {
         manageMusic(false);
         super.onBackPressed();
+        Animatoo.animateSlideRight(PuzzleActivity.this);
+
     }
 
     public void manageMusic(boolean forceShutdown) {
@@ -698,6 +706,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 Intent intent= new Intent(PuzzleActivity.this,FirstScreenActivity.class);
                 finishAffinity();
                 startActivity(intent);
+                Animatoo.animateSlideRight(PuzzleActivity.this);
                 break;
         }
         return true;
