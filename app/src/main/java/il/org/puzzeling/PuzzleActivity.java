@@ -58,7 +58,7 @@ public class PuzzleActivity extends AppCompatActivity {
     String mCurrentPhotoUri;
     String mCurrentPhoto;
     SharedPreferences sp;
-    static  boolean Clue = false;
+    static boolean Clue = false;
     @SuppressLint("StaticFieldLeak")
     public static EditText score_et;
     boolean once = true;
@@ -144,6 +144,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 for (PuzzlePieces piece : pieces) {
                     piece.setOnTouchListener(touchListener);
                     layout.addView(piece);
+
                     // randomize position, on the bottom of the screen
                     RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) piece.getLayoutParams();
                     lParams.leftMargin = new Random().nextInt(layout.getWidth() - piece.pieceWidth);

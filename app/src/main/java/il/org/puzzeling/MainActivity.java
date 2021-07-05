@@ -42,6 +42,7 @@ import static il.org.puzzeling.FirstScreenActivity.isMuted;
 public class MainActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     String mCurrentPhoto;
+    String mCurrentPhotoUri;
     SharedPreferences sp;
     static int FLAG_LEVEL=1;
     static int score;
@@ -112,6 +113,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+     //choosing picture from gallery
+     public void onImageFromGalleryClick(View view) {
+         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+         }
+         else {
+             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+             intent.setType("image/*");
+             startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
+         }
+     }
 
     private File createImageFile() throws IOException {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -142,7 +154,13 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onImageFromCameraClick(new View(this));
                 }
-                return;
+                break;
+            }
+            case REQUEST_PERMISSION_READ_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onImageFromGalleryClick(new View(this));
+                }
+                break;
             }
         }
     }
@@ -162,19 +180,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onImageFromGalleryClick(View view) {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-        }
-        else {
-
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
-        }
-
-    }
 
     @Override
     protected void onPause() {
@@ -238,13 +244,11 @@ public class MainActivity extends AppCompatActivity {
                 finishAffinity();
                 startActivity(intent);
                 break;
-
-
         }
         return true;
     }
 
-    public void showLevelDialog(String photoForPuzzle,String kind){
+    public void showLevelDialog(String photoForPuzzle, String kind){
         LayoutInflater factory = LayoutInflater.from(this);
         final View levelDialogView = factory.inflate(R.layout.level_dialog, null);
         final AlertDialog levelDialog = new AlertDialog.Builder(this).create();

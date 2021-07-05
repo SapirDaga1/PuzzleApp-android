@@ -54,7 +54,6 @@ public class TouchListener implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 lParams.leftMargin =  Math.min(Math.max(0, (int)(x - deltaX)), screenWidth - v.getWidth());
                 lParams.topMargin = Math.min(Math.max(0, (int)(y - deltaY)), screenHeight - v.getHeight() - 210);
-//                lParams.rightMargin = 0;
                 lParams.bottomMargin = screenHeight;
                 v.setLayoutParams(lParams);
                 break;
