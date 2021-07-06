@@ -16,7 +16,7 @@
         android:textSize="35sp"
         android:textColor="@color/black"
         android:textAllCaps="false"
-        android:fontFamily="@font/font3"
+        android:fontFamily="@font/dualfont"
         android:text="@string/table_score_hint"
         android:padding="5dp"
         android:gravity="center"

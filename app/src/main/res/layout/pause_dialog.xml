@@ -35,7 +35,7 @@
         android:textSize="20sp"
         android:textColor="@color/white"
         android:text="@string/resume_hint"
-        android:fontFamily="@font/font1"/>
+        android:fontFamily="@font/dualfont"/>
 
     <Button
         android:background="@drawable/ic_play_button"
