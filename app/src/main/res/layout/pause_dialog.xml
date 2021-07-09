@@ -22,7 +22,7 @@
         android:layout_height="250dp"
         android:layout_width="300dp"
         android:id="@+id/winner_anim"
-        app:lottie_rawRes="@raw/wait_to_continue_anim"
+        app:lottie_rawRes="@raw/bluebird2"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"/>
 

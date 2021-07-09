@@ -2,7 +2,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
-
     android:background="@drawable/main_background"
     tools:context=".MainActivity"
     android:layout_height="fill_parent"

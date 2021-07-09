@@ -21,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-
         <!-- Timer -->
 
         <LinearLayout
@@ -49,7 +48,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/ic_clock_without_up"
                 android:fontFamily="@font/dualfont"
-                android:padding="15dp"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />

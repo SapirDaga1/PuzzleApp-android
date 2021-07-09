@@ -53,10 +53,7 @@
 
 </RelativeLayout>
 
-
-
         <!--Records Button End-->
-
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -70,6 +67,5 @@
         app:lottie_rawRes="@raw/bluebird"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"/>
-
 
 </RelativeLayout>

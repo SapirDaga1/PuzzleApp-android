@@ -21,12 +21,11 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 public class
 FirstScreenActivity extends AppCompatActivity {
+
     Button playBtn;
     Button recordsBtn;
-
-    static boolean isMuted =false;
     SharedPreferences sp;
-
+    static boolean isMuted =false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

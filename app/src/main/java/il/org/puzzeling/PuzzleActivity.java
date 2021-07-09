@@ -429,7 +429,6 @@ public class PuzzleActivity extends AppCompatActivity {
                 matrix, true);
     }
 
-
 //----------Chronometer------------//
 
     public void startChronometer() {
@@ -438,8 +437,8 @@ public class PuzzleActivity extends AppCompatActivity {
             chronometer.start();
             running = true;
         }
-
     }
+
     public void pauseChronometer(View v) {
         if (running) {
             chronometer.stop();
@@ -448,6 +447,7 @@ public class PuzzleActivity extends AppCompatActivity {
             openPauseDialog();
         }
     }
+
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
@@ -714,7 +714,6 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public static void syncScore(){
         score_et.setText(score + "");
-
     }
 
     //designed Toast

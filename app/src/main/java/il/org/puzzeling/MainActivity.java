@@ -48,19 +48,23 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     static int FLAG_LEVEL=1;
     static int score;
-    static int points=10;;
+    static int points=10;
+
+    int choice = 4; //default choice is easy level
 
     private static final long DEFAULT_DURATION_MILLIS = 2000L;
     private long duration = DEFAULT_DURATION_MILLIS;
 
     GridView grid;
+    Dialog level_dialog;
+
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
-   // String[] items;
-    Dialog level_dialog;
-    int choice = 4; //default choice is easy level
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,7 +297,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         levelDialogView.findViewById(R.id.select_btn).setOnClickListener(new View.OnClickListener() {
             @Override
