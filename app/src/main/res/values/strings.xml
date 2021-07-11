@@ -25,7 +25,7 @@
     <string name="hard_lvl">Hard</string>
     <string name="super_hard_lvl">Super hard</string>
     <string name="name_hint">Enter your name</string>
-    <string name="ok_hint">SEND</string>
+    <string name="ok_hint">Ok</string>
     <string name="resume_hint">Press on \"PLAY\" to resume</string>
     <string name="homepage">Already in home page</string>
     <string name="clue">"You've chosen to pick clue, used  "</string>

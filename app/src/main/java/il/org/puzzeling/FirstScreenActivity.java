@@ -3,12 +3,15 @@ package il.org.puzzeling;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
@@ -21,11 +24,12 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 public class
 FirstScreenActivity extends AppCompatActivity {
-
     Button playBtn;
     Button recordsBtn;
-    SharedPreferences sp;
+
     static boolean isMuted =false;
+    SharedPreferences sp;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,27 +48,44 @@ FirstScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(50);
+                scaleAnimation.setDuration(100);
                 scaleAnimation.setRepeatMode(Animation.REVERSE);
                 scaleAnimation.setRepeatCount(1);
                 playBtn.startAnimation(scaleAnimation);
-                Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
-                startActivity(intent);
-                Animatoo.animateZoom(FirstScreenActivity.this);
+                final long sleep = 300L;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent= new Intent(FirstScreenActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        Animatoo.animateZoom(FirstScreenActivity.this);
+                    }
+                }, sleep);
+
 
             }
         });
         recordsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleAnimation.setDuration(50);
+                scaleAnimation.setDuration(100);
                 scaleAnimation.setRepeatMode(Animation.REVERSE);
                 scaleAnimation.setRepeatCount(1);
                 recordsBtn.startAnimation(scaleAnimation);
-                Intent intent= new Intent(FirstScreenActivity.this,ScoreActivity.class);
-                startActivity(intent);
-                Animatoo.animateZoom(FirstScreenActivity.this);
+                final long sleep = 300L;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent= new Intent(FirstScreenActivity.this,ScoreActivity.class);
+                        startActivity(intent);
+                        Animatoo.animateZoom(FirstScreenActivity.this);
+                    }
+                }, sleep);
+
             }
         });
 
@@ -149,5 +170,6 @@ FirstScreenActivity extends AppCompatActivity {
         toast.setView(layout);
         toast.show();
     }
+
 
 }

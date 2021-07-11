@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,23 +50,19 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     static int FLAG_LEVEL=1;
     static int score;
-    static int points=10;
-
-    int choice = 4; //default choice is easy level
+    static int points=10;;
 
     private static final long DEFAULT_DURATION_MILLIS = 2000L;
     private long duration = DEFAULT_DURATION_MILLIS;
 
     GridView grid;
-    Dialog level_dialog;
-
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 3;
     static final int REQUEST_IMAGE_GALLERY = 4;
-
-
-
+    // String[] items;
+    Dialog level_dialog;
+    int choice = 4; //default choice is easy level
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
             grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation.setDuration(100);
+                    scaleAnimation.setRepeatMode(Animation.REVERSE);
+                    scaleAnimation.setRepeatCount(1);
+                    view.startAnimation(scaleAnimation);
                     mCurrentPhoto = files[i % files.length];
                     showLevelDialog(mCurrentPhoto,"mCurrentPhoto");
                 }
@@ -119,17 +122,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-     //choosing picture from gallery
-     public void onImageFromGalleryClick(View view) {
-         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-         }
-         else {
-             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-             intent.setType("image/*");
-             startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
-         }
-     }
+    //choosing picture from gallery
+    public void onImageFromGalleryClick(View view) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+        }
+        else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
+        }
+    }
 
     private File createImageFile() throws IOException {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -297,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         levelDialogView.findViewById(R.id.select_btn).setOnClickListener(new View.OnClickListener() {
             @Override

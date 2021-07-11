@@ -21,12 +21,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -76,9 +79,10 @@ public class PuzzleActivity extends AppCompatActivity {
     Dialog win_dialog;
     Dialog pause_dialog;
     Dialog clue_dialog;
+    Button pause_play_btn;
 
     public int num; //num of pieces
-   // private int hintChosen;
+    // private int hintChosen;
 
     String mFinalPhotoString;
     boolean mIsAsset = false;
@@ -429,6 +433,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 matrix, true);
     }
 
+
 //----------Chronometer------------//
 
     public void startChronometer() {
@@ -437,8 +442,8 @@ public class PuzzleActivity extends AppCompatActivity {
             chronometer.start();
             running = true;
         }
-    }
 
+    }
     public void pauseChronometer(View v) {
         if (running) {
             chronometer.stop();
@@ -447,7 +452,6 @@ public class PuzzleActivity extends AppCompatActivity {
             openPauseDialog();
         }
     }
-
     public void resetChronometer(View v) {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
@@ -534,8 +538,23 @@ public class PuzzleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //resume the game
-                pause_dialog.cancel();
-                startChronometer();
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(100);
+                scaleAnimation.setRepeatMode(Animation.REVERSE);
+                scaleAnimation.setRepeatCount(1);
+                v.startAnimation(scaleAnimation);
+                final long sleep = 500L;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pause_dialog.cancel();
+                        startChronometer();
+                    }
+                }, sleep);
+
+
+
             }
         });
     }
@@ -575,7 +594,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 ImageView imageView = findViewById(R.id.imageView);
                 imageView.setVisibility(View.VISIBLE);
 
-              // update the score after taking hint
+                // update the score after taking hint
                 switch(FLAG_LEVEL)
                 {
                     case 1:
@@ -685,7 +704,7 @@ public class PuzzleActivity extends AppCompatActivity {
             case R.id.clue:
 
                 //notifying for user- using hint will reduce him points.
-                    openClueDialog();
+                openClueDialog();
                 break;
 
             case R.id.sound_icon:
@@ -714,6 +733,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public static void syncScore(){
         score_et.setText(score + "");
+
     }
 
     //designed Toast
