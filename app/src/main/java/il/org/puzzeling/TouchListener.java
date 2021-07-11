@@ -1,10 +1,17 @@
 package il.org.puzzeling;
 
+
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import static il.org.puzzeling.MainActivity.FLAG_LEVEL;
+import static il.org.puzzeling.MainActivity.points;
+import static il.org.puzzeling.MainActivity.score;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 import static java.lang.StrictMath.abs;
@@ -14,14 +21,21 @@ public class TouchListener implements View.OnTouchListener {
     private  float deltaY;
     private PuzzleActivity activity;
 
+
     public TouchListener(PuzzleActivity activity) {
         this.activity = activity;
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getRawX();
         float y = event.getRawY();
+
+        DisplayMetrics displayMetrics= activity.getResources().getDisplayMetrics();
+        int screenHeight =displayMetrics.heightPixels;
+        int screenWidth= displayMetrics.widthPixels;
+
         final double tolerance = sqrt(pow(v.getWidth(), 2) + pow(v.getHeight(), 2)) / 10;
 
         PuzzlePieces piece = (PuzzlePieces) v;
@@ -38,8 +52,9 @@ public class TouchListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                lParams.leftMargin = (int) (x - deltaX);
-                lParams.topMargin = (int) (y - deltaY);
+                lParams.leftMargin =  Math.min(Math.max(0, (int)(x - deltaX)), screenWidth - v.getWidth());
+                lParams.topMargin = Math.min(Math.max(0, (int)(y - deltaY)), screenHeight - v.getHeight() - 210);
+                lParams.bottomMargin = screenHeight;
                 v.setLayoutParams(lParams);
                 break;
 
@@ -51,6 +66,9 @@ public class TouchListener implements View.OnTouchListener {
                     lParams.topMargin = piece.yCoord;
                     piece.setLayoutParams(lParams);
                     piece.canMove = false;
+                    piece.startAnimation(AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.pulse));
+                    score = score+ points*FLAG_LEVEL;
+                    PuzzleActivity.syncScore();
                     sendViewToBack(piece);
                     activity.checkGameOver();
                 }

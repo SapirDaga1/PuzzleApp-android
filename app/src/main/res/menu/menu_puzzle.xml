@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sound_icon"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/ic_music_btn"
+        android:orderInCategory="4"
+        />
+
+    <item
+        android:id="@+id/home_icon"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/ic_home_button"
+        android:orderInCategory="2"
+        />
+
+
+    <item
+        android:id="@+id/clue"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/ic_hint_bulb_button"
+        android:orderInCategory="1"
+        />
+
+
+</menu>

@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Puzzeling</string>
     <string name="about_btn">ABOUT</string>
-    <string name="records_btn">TABLE OF RECORDS</string>
+    <string name="records_btn">RECORDS</string>
     <string name="play_btn">PLAY</string>
     <string name="level_hint">SELECT LEVEL</string>
 
 
     <string-array name="levels">
-        <item>Esay</item>
-        <item>Medium</item>
-        <item>Hard</item>
-        <item>Super hard</item>
+        <item>@string/easy_lvl</item>
+        <item>@string/medium_lvl</item>
+        <item>@string/hard_lvl</item>
+        <item>@string/super_hard_lvl</item>
     </string-array>
 
     <string name="select_btn">Select</string>
@@ -20,5 +20,22 @@
     <string name="super_hard_selected">Super hard level selected - 49 pieces</string>
     <string name="back_btn">BACK</string>
     <string name="cancel_btn">CANCEL</string>
+    <string name="easy_lvl">Easy</string>
+    <string name="medium_lvl">Medium</string>
+    <string name="hard_lvl">Hard</string>
+    <string name="super_hard_lvl">Super hard</string>
+    <string name="name_hint">Enter your name</string>
+    <string name="ok_hint">Ok</string>
+    <string name="resume_hint">Press on \"PLAY\" to resume</string>
+    <string name="homepage">Already in home page</string>
+    <string name="clue">"You've chosen to pick clue, used  "</string>
+    <string name="points">" points"</string>
+    <string name="home_page">Home Page</string>
+    <string name="hint_puzzle_text_easy">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 30 points</string>
+    <string name="hint_puzzle_text_medium">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 40 points</string>
+    <string name="hint_puzzle_text_hard">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 50 points</string>
+    <string name="hint_puzzle_text_superhard">Are you sure you want use the hint ? you can use it only once. Using hint will reduce 60 points</string>
+    <string name="hint_error">"You Don't Have Enough Points!\n Minimum of 50!"</string>
+    <string name="table_score_hint">Score Table</string>
 </resources>
 

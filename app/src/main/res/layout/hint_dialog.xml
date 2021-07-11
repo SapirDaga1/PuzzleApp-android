@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_centerInParent="true"
+    android:layout_height="wrap_content"
+    android:layout_width="300dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="30dp"
+        android:background="@drawable/dialog_backround"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/dialog_layout">
+
+        <TextView android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/hintText"
+            android:fontFamily="@font/dualfont"
+            android:textSize="24sp"
+            android:text="@string/hint_puzzle_text_easy"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+
+    <LinearLayout android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/dialog_layout"
+        android:layout_marginTop="-20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/cancel_btn"
+            android:fontFamily="@font/dualfont"
+            android:textColor="@color/white"
+            android:id="@+id/cancel_btn"
+            android:text="@string/cancel_btn"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginEnd="30dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/select_btn"
+            android:fontFamily="@font/dualfont"
+            android:id="@+id/select_btn"
+            android:text="@string/ok_hint"
+            android:textColor="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+
+    </LinearLayout>
+</RelativeLayout>

@@ -10,7 +10,7 @@
     android:id="@+id/anim_first_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:lottie_rawRes="@raw/splash"
+    app:lottie_rawRes="@raw/puzzle"
     android:layout_centerInParent="true"
     app:lottie_autoPlay="true"
     app:lottie_loop="true"

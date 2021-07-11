@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/dialog_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_backround"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/dualfont"
+            android:gravity="center"
+            android:text="@string/level_hint"
+            android:textColor="@color/white"
+            android:textSize="26sp" />
+
+        <View
+            android:id="@+id/mb"
+            android:layout_width="200dp"
+            android:layout_height="2dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/title_tv"
+            android:background="@color/white" />
+
+
+        <RadioGroup
+            android:id="@+id/level_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mb"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp">
+
+            <RadioButton
+                android:id="@+id/easy_rb"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/radio_btn_selector"
+                android:button="@null"
+                android:fontFamily="@font/dualfont"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/easy_lvl"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/medium_rb"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/radio_btn_selector"
+                android:button="@null"
+                android:fontFamily="@font/dualfont"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/medium_lvl"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/hard_rb"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/radio_btn_selector"
+                android:button="@null"
+                android:fontFamily="@font/dualfont"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/hard_lvl"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/very_hard_rb"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/radio_btn_selector"
+                android:button="@null"
+                android:fontFamily="@font/dualfont"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/super_hard_lvl"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_layout"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/cancel_btn"
+            android:fontFamily="@font/dualfont"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/cancel_btn"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/select_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_btn"
+            android:fontFamily="@font/dualfont"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/select_btn"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</RelativeLayout>

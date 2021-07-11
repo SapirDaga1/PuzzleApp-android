@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ImageAdapter extends BaseAdapter {
+
     private Context mContext;
     private AssetManager am;
     private String[] files;
@@ -51,6 +52,7 @@ public class ImageAdapter extends BaseAdapter {
 
         final ImageView imageView = convertView.findViewById(R.id.gridImageview);
         imageView.setImageBitmap(null);
+
         // run image related code after the view was laid out
         imageView.post(new Runnable() {
             @Override

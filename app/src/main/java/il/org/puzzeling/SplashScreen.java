@@ -13,8 +13,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        getSupportActionBar().hide();
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -23,7 +21,7 @@ public class SplashScreen extends AppCompatActivity {
                 SplashScreen.this.finish();
             }
 
-        }, 2000);
+        }, 2500);
 
     }
 }

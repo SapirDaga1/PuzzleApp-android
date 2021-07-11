@@ -1,49 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".FirstScreenActivity"
     android:id="@+id/first_screen_layout"
-    android:background="@drawable/aaaaa">
+    android:background="@drawable/first_screen_photo">
+
+        <!--Play Button-->
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/home_layout"
-        android:paddingTop="200dp">
-        <Button
-            android:id="@+id/about_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:layout_marginEnd="15dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/about_btn"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+        android:id="@+id/play_combine"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp">
         <Button
             android:id="@+id/play_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/about_btn"
-            android:backgroundTint="@color/black"
-            android:layout_marginEnd="15dp"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_yellow_puzzle_button"
+            android:fontFamily="@font/dualfont"
+            android:gravity="center"
             android:text="@string/play_btn"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-        <Button
-            android:id="@+id/recordsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/play_btn"
-            android:backgroundTint="@color/black"
-            android:layout_marginEnd="15dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/records_btn"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
     </RelativeLayout>
+    <!-- End Play button -->
+
+    <!--Records Button-->
+    <RelativeLayout
+        android:id="@+id/about_combine"
+        android:layout_width="140dp"
+        android:layout_below="@+id/play_combine"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <Button
+
+            android:id="@+id/recordsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_red_puzzle_button"
+            android:fontFamily="@font/dualfont"
+            android:gravity="center"
+            android:text="@string/records_btn"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+</RelativeLayout>
+
+        <!--Records Button End-->
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignTop="@id/about_combine"
+        android:paddingTop="160dp"
+        app:lottie_rawRes="@raw/bluebird"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 
 </RelativeLayout>
